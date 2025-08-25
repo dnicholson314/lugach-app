@@ -1,22 +1,23 @@
 {
-  "name": "lugach-app",
-  "version": "1.0.0",
-  "description": "A UI interface for LUGACH.",
-  "main": "main.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/dnicholson314/lugach-app.git"
-  },
-  "author": "Dennis Nicholson",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/dnicholson314/lugach-app/issues"
-  },
-  "homepage": "https://github.com/dnicholson314/lugach-app#readme",
-  "devDependencies": {
-    "electron": "^37.3.1"
-  }
+    "name": "lugach-app",
+    "version": "1.0.0",
+    "description": "A UI interface for LUGACH.",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron .",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/dnicholson314/lugach-app.git"
+    },
+    "author": "Dennis Nicholson",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/dnicholson314/lugach-app/issues"
+    },
+    "homepage": "https://github.com/dnicholson314/lugach-app#readme",
+    "devDependencies": {
+        "electron": "^37.3.1"
+    }
 }
