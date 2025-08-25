@@ -1,26 +1,22 @@
 {
   "name": "lugach-app",
-  "private": true,
-  "version": "0.1.0",
-  "type": "module",
+  "version": "1.0.0",
+  "description": "A UI interface for LUGACH.",
+  "main": "main.js",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview",
-    "tauri": "tauri"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "dependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "@tauri-apps/api": "^2",
-    "@tauri-apps/plugin-opener": "^2"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dnicholson314/lugach-app.git"
   },
+  "author": "Dennis Nicholson",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dnicholson314/lugach-app/issues"
+  },
+  "homepage": "https://github.com/dnicholson314/lugach-app#readme",
   "devDependencies": {
-    "@types/react": "^18.3.1",
-    "@types/react-dom": "^18.3.1",
-    "@vitejs/plugin-react": "^4.3.4",
-    "typescript": "~5.6.2",
-    "vite": "^6.0.3",
-    "@tauri-apps/cli": "^2"
+    "electron": "^37.3.1"
   }
 }
