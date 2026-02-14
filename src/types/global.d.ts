@@ -1,4 +1,4 @@
-import { CanvasCourse } from "../hooks/courses";
+import { CanvasCourse } from "src/hooks/courses";
 
 declare global {
     interface Window {

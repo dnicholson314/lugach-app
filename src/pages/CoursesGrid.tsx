@@ -1,5 +1,5 @@
 import Alert from "@mui/material/Alert";
-import { useCanvasCourses } from "../hooks/courses";
+import { useCanvasCourses } from "src/hooks/courses";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 
 const columns: GridColDef[] = [

@@ -10,7 +10,9 @@
         "package": "electron-forge package",
         "make": "electron-forge make",
         "publish": "electron-forge publish",
-        "lint": "eslint --ext .ts,.tsx ."
+        "check:type": "tsc --noEmit",
+        "check:lint": "eslint --ext .ts,.tsx .",
+        "check:prettier": "prettier -c ."
     },
     "keywords": [],
     "author": "dnicholson",
@@ -27,19 +29,20 @@
         "@electron/fuses": "^1.8.0",
         "@types/react": "^19.2.10",
         "@types/react-dom": "^19.2.3",
-        "@typescript-eslint/eslint-plugin": "^5.62.0",
-        "@typescript-eslint/parser": "^5.62.0",
+        "@typescript-eslint/eslint-plugin": "^8.55.0",
+        "@typescript-eslint/parser": "^8.55.0",
         "@vercel/webpack-asset-relocator-loader": "^1.7.3",
         "css-loader": "^6.11.0",
         "electron": "40.1.0",
         "eslint": "^8.57.1",
+        "eslint-import-resolver-typescript": "^4.4.4",
         "eslint-plugin-import": "^2.32.0",
         "fork-ts-checker-webpack-plugin": "^7.3.0",
         "node-loader": "^2.1.0",
         "prettier": "3.8.1",
         "style-loader": "^3.3.4",
         "ts-loader": "^9.5.4",
-        "typescript": "~4.5.4"
+        "typescript": "^5.9.3"
     },
     "dependencies": {
         "@emotion/react": "^11.14.0",
