@@ -1,5 +1,12 @@
+import MoreVert from "@mui/icons-material/MoreVert";
 import Alert from "@mui/material/Alert";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import {
+    DataGrid,
+    GridActionsCell,
+    GridActionsCellItem,
+    GridColDef,
+    GridRenderCellParams,
+} from "@mui/x-data-grid";
 import { useState } from "react";
 import { CourseSelect } from "src/components/CourseSelect";
 import { CanvasCourse } from "src/hooks/courses";
@@ -9,6 +16,21 @@ const columns: GridColDef[] = [
     { field: "name", headerName: "Name", width: 200 },
     { field: "sis_user_id", headerName: "Liberty ID", width: 100 },
     { field: "email", headerName: "Email", width: 200 },
+    {
+        field: "actions",
+        type: "actions",
+        width: 40,
+        headerAlign: "right",
+        renderCell: (params: GridRenderCellParams) => (
+            <GridActionsCell {...params}>
+                <GridActionsCellItem
+                    icon={<MoreVert />}
+                    label="Details"
+                    onClick={() => console.log(params.id)}
+                />
+            </GridActionsCell>
+        ),
+    },
 ];
 
 export interface StudentsGridProps {
