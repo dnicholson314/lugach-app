@@ -1,5 +1,10 @@
 import { createRoot } from "react-dom/client";
-import Button from "@mui/material/Button";
+import React from "react";
+import { CoursesGrid } from "./pages/CoursesGrid";
 
 const root = createRoot(document.body);
-root.render(<Button variant="contained">Hello</Button>);
+root.render(
+    <React.StrictMode>
+        <CoursesGrid />
+    </React.StrictMode>,
+);
