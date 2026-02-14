@@ -8,24 +8,34 @@ export interface CanvasStudent {
 }
 
 export interface CanvasStudentData {
-    data: CanvasStudent[];
+    value: CanvasStudent[];
     error?: string;
-    loading: boolean;
+    loading?: boolean;
 }
 
-export const useCanvasStudents = (courseId: number): CanvasStudentData => {
+export const useCanvasStudents = (
+    courseId: number,
+    skipToken?: boolean,
+): CanvasStudentData => {
     const [students, setStudents] = useState<CanvasStudent[]>([]);
     const [error, setError] = useState<string>();
     const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
         const fetchStudents = async () => {
+            if (skipToken) {
+                setStudents([]);
+                setError(undefined);
+                setLoading(false);
+                return;
+            }
+
             setLoading(true);
             setError(undefined);
-
             try {
                 const data = await window.api.getCanvasStudents(courseId);
-                setStudents(data);
+                setStudents(data.value);
+                setError(data.error);
             } catch (err) {
                 setStudents([]);
                 setError(err instanceof Error ? err.message : String(err));
@@ -35,10 +45,10 @@ export const useCanvasStudents = (courseId: number): CanvasStudentData => {
         };
 
         fetchStudents();
-    }, []);
+    }, [courseId, skipToken]);
 
     return {
-        data: students,
+        value: students,
         error: error,
         loading: loading,
     };

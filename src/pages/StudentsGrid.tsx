@@ -1,5 +1,8 @@
 import Alert from "@mui/material/Alert";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { useState } from "react";
+import { CourseSelect } from "src/components/CourseSelect";
+import { CanvasCourse } from "src/hooks/courses";
 import { useCanvasStudents } from "src/hooks/students";
 
 const columns: GridColDef[] = [
@@ -12,22 +15,29 @@ export interface StudentsGridProps {
     courseId: number;
 }
 
-export const StudentsGrid = ({ courseId }: StudentsGridProps) => {
-    const { data: students, error, loading } = useCanvasStudents(courseId);
-    console.log(students);
+export const StudentsGrid = () => {
+    const [courseId, setCourseId] = useState<number | undefined>();
+    const {
+        value: students,
+        error,
+        loading,
+    } = useCanvasStudents(courseId, courseId === undefined);
 
     return (
         <>
+            <CourseSelect
+                onChange={(course?: CanvasCourse) => {
+                    if (!course) {
+                        setCourseId(undefined);
+                        return;
+                    }
+                    setCourseId(course.id);
+                }}
+            />
             {error ? <Alert severity="error">{error}</Alert> : null}
-            {students.length ? (
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                    <DataGrid
-                        rows={students}
-                        columns={columns}
-                        loading={loading}
-                    />
-                </div>
-            ) : null}
+            <div style={{ display: "flex", flexDirection: "column" }}>
+                <DataGrid rows={students} columns={columns} loading={loading} />
+            </div>
         </>
     );
 };

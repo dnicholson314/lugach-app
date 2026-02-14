@@ -5,6 +5,6 @@ import { StudentsGrid } from "./pages/StudentsGrid";
 const root = createRoot(document.body);
 root.render(
     <React.StrictMode>
-        <StudentsGrid courseId={1} />
+        <StudentsGrid />
     </React.StrictMode>,
 );
