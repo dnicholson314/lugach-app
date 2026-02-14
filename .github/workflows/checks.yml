@@ -1,0 +1,30 @@
+name: Code Checks
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    checks:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v3
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "25"
+
+            - name: Install dependencies
+              run: npm install
+
+            - name: Run TypeScript check
+              run: npm run check:type
+
+            - name: Run ESLint check
+              run: npm run check:lint
+
+            - name: Run Prettier check
+              run: npm run check:prettier
