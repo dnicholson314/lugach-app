@@ -7,12 +7,15 @@ export interface CanvasCourse {
 }
 
 export interface CanvasCourseData {
-    data: CanvasCourse[];
+    value: CanvasCourse[];
     error?: string;
-    loading: boolean;
 }
 
-export const useCanvasCourses = (): CanvasCourseData => {
+export type UseCanvasCoursesProps = CanvasCourseData & {
+    loading: boolean;
+};
+
+export const useCanvasCourses = (): UseCanvasCoursesProps => {
     const [courses, setCourses] = useState<CanvasCourse[]>([]);
     const [error, setError] = useState<string>();
     const [loading, setLoading] = useState<boolean>(false);
@@ -24,7 +27,8 @@ export const useCanvasCourses = (): CanvasCourseData => {
 
             try {
                 const data = await window.api.getCanvasCourses();
-                setCourses(data);
+                setCourses(data.value);
+                setError(data.error);
             } catch (err) {
                 setCourses([]);
                 setError(err instanceof Error ? err.message : String(err));
@@ -37,7 +41,7 @@ export const useCanvasCourses = (): CanvasCourseData => {
     }, []);
 
     return {
-        data: courses,
+        value: courses,
         error: error,
         loading: loading,
     };

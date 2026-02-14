@@ -10,13 +10,16 @@ export interface CanvasStudent {
 export interface CanvasStudentData {
     value: CanvasStudent[];
     error?: string;
-    loading?: boolean;
 }
+
+export type UseCanvasStudentsProps = CanvasStudentData & {
+    loading: boolean;
+};
 
 export const useCanvasStudents = (
     courseId: number,
     skipToken?: boolean,
-): CanvasStudentData => {
+): UseCanvasStudentsProps => {
     const [students, setStudents] = useState<CanvasStudent[]>([]);
     const [error, setError] = useState<string>();
     const [loading, setLoading] = useState<boolean>(false);

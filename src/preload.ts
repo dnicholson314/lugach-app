@@ -3,10 +3,10 @@
 
 import { contextBridge, ipcRenderer } from "electron";
 import { CanvasStudentData } from "./hooks/students";
-import { CanvasCourse } from "./hooks/courses";
+import { CanvasCourseData } from "./hooks/courses";
 
 contextBridge.exposeInMainWorld("api", {
-    getCanvasCourses: (): Promise<CanvasCourse> =>
+    getCanvasCourses: (): Promise<CanvasCourseData> =>
         ipcRenderer.invoke("canvas:get-courses"),
     getCanvasStudents: (courseId: number): Promise<CanvasStudentData> =>
         ipcRenderer.invoke("canvas:get-students", courseId),

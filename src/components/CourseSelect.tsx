@@ -1,22 +1,24 @@
 import {
     Autocomplete,
     AutocompleteRenderInputParams,
+    SxProps,
     TextField,
 } from "@mui/material";
 import { CanvasCourse, useCanvasCourses } from "src/hooks/courses";
 
 interface CourseSelectProps {
     onChange(course?: CanvasCourse): void;
+    sx?: SxProps;
 }
 
-export const CourseSelect = ({ onChange }: CourseSelectProps) => {
-    const { data: courses, loading } = useCanvasCourses();
+export const CourseSelect = ({ onChange, sx }: CourseSelectProps) => {
+    const { value: courses, loading } = useCanvasCourses();
 
     return (
         <Autocomplete
             disablePortal
             options={courses}
-            sx={{ width: 300 }}
+            sx={sx}
             renderInput={(params: AutocompleteRenderInputParams) => (
                 <TextField {...params} label="Course" />
             )}

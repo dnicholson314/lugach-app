@@ -8,7 +8,7 @@ const columns: GridColDef[] = [
 ];
 
 export const CoursesGrid = () => {
-    const { data: courses, error, loading } = useCanvasCourses();
+    const { value: courses, error, loading } = useCanvasCourses();
 
     return (
         <>

@@ -1,10 +1,10 @@
-import { CanvasCourse } from "src/hooks/courses";
+import { CanvasCourseData } from "src/hooks/courses";
 import { CanvasStudentData } from "src/hooks/students";
 
 declare global {
     interface Window {
         api: {
-            getCanvasCourses: () => Promise<CanvasCourse[]>;
+            getCanvasCourses: () => Promise<CanvasCourseData>;
             getCanvasStudents: (courseId) => Promise<CanvasStudentData>;
         };
     }
