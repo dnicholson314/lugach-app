@@ -13,7 +13,7 @@ export const handleGetCanvasStudents =
     async (
         _: IpcMainInvokeEvent,
         courseId: number,
-    ): Promise<EndpointData<CanvasStudent>> => {
+    ): Promise<EndpointData<CanvasStudent[]>> => {
         if (!apiUrl || !apiKey) {
             return {
                 value: [],

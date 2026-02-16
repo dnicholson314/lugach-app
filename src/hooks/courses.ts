@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { CanvasCourse } from "src/api/courses";
 import { HookData } from "src/common/models";
 
-export const useCanvasCourses = (): HookData<CanvasCourse> => {
+export const useCanvasCourses = (): HookData<CanvasCourse[]> => {
     const [courses, setCourses] = useState<CanvasCourse[]>([]);
     const [error, setError] = useState<string>();
     const [loading, setLoading] = useState<boolean>(false);

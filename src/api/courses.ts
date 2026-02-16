@@ -8,7 +8,7 @@ export interface CanvasCourse {
 
 export const handleGetCanvasCourses =
     (apiUrl: string, apiKey: string) =>
-    async (): Promise<EndpointData<CanvasCourse>> => {
+    async (): Promise<EndpointData<CanvasCourse[]>> => {
         if (!apiUrl || !apiKey) {
             return {
                 value: [],

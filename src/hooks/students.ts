@@ -5,7 +5,7 @@ import { HookData } from "src/common/models";
 export const useCanvasStudents = (
     courseId: number,
     skipToken?: boolean,
-): HookData<CanvasStudent> => {
+): HookData<CanvasStudent[]> => {
     const [students, setStudents] = useState<CanvasStudent[]>([]);
     const [error, setError] = useState<string>();
     const [loading, setLoading] = useState<boolean>(false);

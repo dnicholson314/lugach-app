@@ -1,5 +1,5 @@
 export type EndpointData<E> = {
-    value: E[];
+    value: E;
     error?: string;
 };
 

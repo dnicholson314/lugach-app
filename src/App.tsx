@@ -1,6 +1,6 @@
 import { createRoot } from "react-dom/client";
 import React from "react";
-import { StudentsGrid } from "./pages/StudentsGrid";
+import { StudentsGrid } from "src/pages/StudentsGrid";
 
 const root = createRoot(document.body);
 root.render(
