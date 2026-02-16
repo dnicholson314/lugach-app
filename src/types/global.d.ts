@@ -1,11 +1,14 @@
-import { CanvasCourseData } from "src/hooks/courses";
-import { CanvasStudentData } from "src/hooks/students";
+import { CanvasCourse } from "src/api/courses";
+import { EndpointData } from "src/common/models";
+import { CanvasStudent } from "src/hooks/students";
 
 declare global {
     interface Window {
         api: {
-            getCanvasCourses: () => Promise<CanvasCourseData>;
-            getCanvasStudents: (courseId) => Promise<CanvasStudentData>;
+            getCanvasCourses: () => Promise<EndpointData<CanvasCourse>>;
+            getCanvasStudents: (
+                courseId,
+            ) => Promise<EndpointData<CanvasStudent>>;
         };
     }
 }

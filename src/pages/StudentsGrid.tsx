@@ -11,7 +11,8 @@ import Alert from "@mui/material/Alert";
 import { DataGrid, GridColDef, GridRowParams } from "@mui/x-data-grid";
 import { RichTreeView } from "@mui/x-tree-view";
 import { useState } from "react";
-import { CanvasCourse, useCanvasCourses } from "src/hooks/courses";
+import { CanvasCourse } from "src/api/courses";
+import { useCanvasCourses } from "src/hooks/courses";
 import { useCanvasStudents } from "src/hooks/students";
 
 export interface StudentsGridProps {
@@ -76,16 +77,6 @@ export const StudentsGrid = () => {
                     ) : (
                         <CircularProgress />
                     )}
-                    {/* <CourseSelect */}
-                    {/*     onChange={(course?: CanvasCourse) => { */}
-                    {/*         if (!course) { */}
-                    {/*             setCourseId(undefined); */}
-                    {/*             return; */}
-                    {/*         } */}
-                    {/*         setCourseId(course.id); */}
-                    {/*     }} */}
-                    {/*     sx={{ flex: 2, mt: 1 }} */}
-                    {/* /> */}
                 </Box>
                 <Box sx={{ height: "100%", width: "50%" }}>
                     {studentsError ? (

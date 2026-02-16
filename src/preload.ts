@@ -2,12 +2,15 @@
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 
 import { contextBridge, ipcRenderer } from "electron";
-import { CanvasStudentData } from "./hooks/students";
-import { CanvasCourseData } from "./hooks/courses";
+import { EndpointData } from "./common/models";
+import { CanvasStudent } from "./api/students";
+import { CanvasCourse } from "./api/courses";
 
 contextBridge.exposeInMainWorld("api", {
-    getCanvasCourses: (): Promise<CanvasCourseData> =>
+    getCanvasCourses: (): Promise<EndpointData<CanvasCourse>> =>
         ipcRenderer.invoke("canvas:get-courses"),
-    getCanvasStudents: (courseId: number): Promise<CanvasStudentData> =>
+    getCanvasStudents: (
+        courseId: number,
+    ): Promise<EndpointData<CanvasStudent>> =>
         ipcRenderer.invoke("canvas:get-students", courseId),
 });

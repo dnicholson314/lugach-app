@@ -1,21 +1,8 @@
 import { useEffect, useState } from "react";
+import { CanvasCourse } from "src/api/courses";
+import { HookData } from "src/common/models";
 
-export interface CanvasCourse {
-    id: number;
-    name: string;
-    course_code: string;
-}
-
-export interface CanvasCourseData {
-    value: CanvasCourse[];
-    error?: string;
-}
-
-export type UseCanvasCoursesProps = CanvasCourseData & {
-    loading: boolean;
-};
-
-export const useCanvasCourses = (): UseCanvasCoursesProps => {
+export const useCanvasCourses = (): HookData<CanvasCourse> => {
     const [courses, setCourses] = useState<CanvasCourse[]>([]);
     const [error, setError] = useState<string>();
     const [loading, setLoading] = useState<boolean>(false);
