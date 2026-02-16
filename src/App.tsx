@@ -1,10 +1,10 @@
 import { createRoot } from "react-dom/client";
 import React from "react";
-import { StudentsGrid } from "src/pages/StudentsGrid";
+import { StudentsPage } from "src/pages/StudentsPage";
 
 const root = createRoot(document.body);
 root.render(
     <React.StrictMode>
-        <StudentsGrid />
+        <StudentsPage />
     </React.StrictMode>,
 );

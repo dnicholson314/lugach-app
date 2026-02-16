@@ -17,7 +17,7 @@ export interface StudentsGridProps {
     courseId: number;
 }
 
-export const StudentsGrid = () => {
+export const StudentsPage = () => {
     const [courseId, setCourseId] = useState<number>();
     const [selectedStudentId, setSelectedStudentId] = useState<number>();
 
