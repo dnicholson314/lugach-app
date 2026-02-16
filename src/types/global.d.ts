@@ -18,7 +18,6 @@ declare global {
                 assignmentId: number,
                 studentId: number,
             ) => Promise<EndpointData<Submission>>;
-            saveTopHatStorageState: () => void;
         };
     }
 }

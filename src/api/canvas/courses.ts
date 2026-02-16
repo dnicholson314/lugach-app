@@ -1,4 +1,5 @@
 import { EndpointData } from "src/common/models";
+import { callEndpoint } from "./base";
 
 export interface CanvasCourse {
     id: number;
@@ -6,32 +7,9 @@ export interface CanvasCourse {
     course_code: string;
 }
 
-export const handleGetCanvasCourses =
-    (apiUrl: string, apiKey: string) =>
-    async (): Promise<EndpointData<CanvasCourse[]>> => {
-        if (!apiUrl || !apiKey) {
-            return {
-                value: [],
-                error: "Missing Canvas credentials.",
-            };
-        }
-
-        const response = await fetch(`${apiUrl}/api/v1/courses`, {
-            headers: {
-                Authorization: `Bearer ${apiKey}`,
-            },
-        });
-
-        if (!response.ok) {
-            return {
-                value: [],
-                error: `Canvas API error: ${response.status} ${response.statusText}`,
-            };
-        }
-
-        const nextData = await response.json();
-
-        return {
-            value: nextData,
-        };
-    };
+export const handleGetCanvasCourses = async (): Promise<
+    EndpointData<CanvasCourse[]>
+> => {
+    const nextData = await callEndpoint<CanvasCourse[]>("courses");
+    return nextData;
+};

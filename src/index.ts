@@ -1,5 +1,3 @@
-import { config } from "dotenv";
-import path from "path";
 import { app, BrowserWindow, ipcMain, shell } from "electron";
 import { handleGetCanvasCourses } from "src/api/canvas/courses";
 import { handleGetCanvasStudents } from "src/api/canvas/students";
@@ -16,10 +14,6 @@ declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 if (require("electron-squirrel-startup")) {
     app.quit();
 }
-
-config({ path: path.resolve(__dirname, "../../.env") });
-const apiUrl = process.env.CANVAS_API_URL;
-const apiKey = process.env.CANVAS_API_KEY;
 
 const createWindow = (): void => {
     // Create the browser window.
@@ -65,7 +59,7 @@ app.on("activate", () => {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
 
-ipcMain.handle("canvas:get-courses", handleGetCanvasCourses(apiUrl, apiKey));
-ipcMain.handle("canvas:get-students", handleGetCanvasStudents(apiUrl, apiKey));
-ipcMain.handle("canvas:get-assignments", handleGetAssignments(apiUrl, apiKey));
-ipcMain.handle("canvas:get-submission", handleGetSubmission(apiUrl, apiKey));
+ipcMain.handle("canvas:get-courses", handleGetCanvasCourses);
+ipcMain.handle("canvas:get-students", handleGetCanvasStudents);
+ipcMain.handle("canvas:get-assignments", handleGetAssignments);
+ipcMain.handle("canvas:get-submission", handleGetSubmission);
