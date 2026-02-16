@@ -39,6 +39,15 @@ export const StudentsDataGrid = ({
                 loading={studentsLoading}
                 density="compact"
                 onRowClick={handleRowClick}
+                disableColumnSelector
+                disableColumnMenu
+                showToolbar
+                slotProps={{
+                    toolbar: {
+                        csvOptions: { disableToolbarButton: true },
+                        printOptions: { disableToolbarButton: true },
+                    },
+                }}
             />
         </>
     );
