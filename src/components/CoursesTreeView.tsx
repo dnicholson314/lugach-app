@@ -3,7 +3,7 @@ import {
     RichTreeView,
     TreeViewDefaultItemModelProperties,
 } from "@mui/x-tree-view";
-import { CanvasCourse } from "src/api/courses";
+import { CanvasCourse } from "src/api/canvas/courses";
 import { useCanvasCourses } from "src/hooks/courses";
 
 interface CoursesTreeViewProps {

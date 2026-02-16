@@ -4,7 +4,7 @@ import {
     SxProps,
     TextField,
 } from "@mui/material";
-import { CanvasCourse } from "src/api/courses";
+import { CanvasCourse } from "src/api/canvas/courses";
 import { useCanvasCourses } from "src/hooks/courses";
 
 interface CourseSelectProps {

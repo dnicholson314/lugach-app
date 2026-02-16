@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CanvasStudent } from "src/api/students";
+import { CanvasStudent } from "src/api/canvas/students";
 import { HookData } from "src/common/models";
 
 export const useCanvasStudents = (

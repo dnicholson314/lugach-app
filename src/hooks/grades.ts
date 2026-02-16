@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Assignment } from "src/api/grades";
+import { Assignment } from "src/api/canvas/grades";
 import { HookData } from "src/common/models";
 
 export interface Grade {

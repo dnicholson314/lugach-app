@@ -7,7 +7,7 @@ import {
     TableContainer,
     TableRow,
 } from "@mui/material";
-import { CanvasStudent } from "src/api/students";
+import { CanvasStudent } from "src/api/canvas/students";
 import { useCanvasStudents } from "src/hooks/students";
 
 interface StudentInfoTableProps {

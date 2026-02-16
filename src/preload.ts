@@ -3,9 +3,9 @@
 
 import { contextBridge, ipcRenderer } from "electron";
 import { EndpointData } from "./common/models";
-import { CanvasStudent } from "./api/students";
-import { CanvasCourse } from "./api/courses";
-import { Assignment } from "./api/grades";
+import { CanvasStudent } from "./api/canvas/students";
+import { CanvasCourse } from "./api/canvas/courses";
+import { Assignment } from "./api/canvas/grades";
 
 contextBridge.exposeInMainWorld("api", {
     getCanvasCourses: (): Promise<EndpointData<CanvasCourse[]>> =>
