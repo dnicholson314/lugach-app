@@ -32,7 +32,6 @@ export const callEndpoint = async <E>(
         }
 
         const url = `${apiUrl}/api/v1/${endpoint}`;
-        console.log(url);
         const response = await fetch(url, {
             headers: {
                 Authorization: `Bearer ${apiKey}`,

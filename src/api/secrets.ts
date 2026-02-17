@@ -65,11 +65,9 @@ export const saveStorageState = async (
     );
 };
 
-export const loadStorageState = async (
-    directory: string,
-): Promise<StorageState> => {
+export const loadStorageState = async (): Promise<StorageState> => {
     const storageFilePath = path.join(
-        directory,
+        ROOT_DIR,
         `${STORAGE_STATE_SECRET_NAME}.state`,
     );
 

@@ -90,3 +90,6 @@ typings/
 
 # Electron-Forge
 out/
+
+# Authenticated state from Playwright
+*.state

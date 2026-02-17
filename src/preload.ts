@@ -6,6 +6,8 @@ import { EndpointData } from "./common/models";
 import { CanvasStudent } from "./api/canvas/students";
 import { CanvasCourse } from "./api/canvas/courses";
 import { Assignment } from "./api/canvas/grades";
+import { TopHatCourse } from "./api/top-hat/courses";
+import { AttendanceItem, AttendanceRecord } from "./api/top-hat/attendance";
 
 contextBridge.exposeInMainWorld("api", {
     getCanvasCourses: (): Promise<EndpointData<CanvasCourse[]>> =>
@@ -25,6 +27,21 @@ contextBridge.exposeInMainWorld("api", {
             "canvas:get-submission",
             courseId,
             assignmentId,
+            studentId,
+        ),
+    getTopHatCourses: (): Promise<EndpointData<TopHatCourse[]>> =>
+        ipcRenderer.invoke("top-hat:get-courses"),
+    getAttendanceItems: (
+        courseId: number,
+    ): Promise<EndpointData<AttendanceItem[]>> =>
+        ipcRenderer.invoke("top-hat:get-attendance-items", courseId),
+    getAttendanceRecords: (
+        courseId: number,
+        studentId: number,
+    ): Promise<EndpointData<AttendanceRecord[]>> =>
+        ipcRenderer.invoke(
+            "top-hat:get-attendance-records",
+            courseId,
             studentId,
         ),
 });

@@ -38,7 +38,7 @@ export const CoursesTreeView = ({ onCourseSelect }: CoursesTreeViewProps) => {
             {!coursesLoading ? (
                 <RichTreeView
                     items={courseTreeItems}
-                    expandedItems={["canvas"]}
+                    defaultExpandedItems={["canvas"]}
                     onItemSelectionToggle={(
                         _,
                         itemId: string,

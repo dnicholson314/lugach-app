@@ -2,6 +2,7 @@ import { CanvasCourse } from "src/api/canvas/courses";
 import { EndpointData } from "src/common/models";
 import { Assignment } from "src/api/canvas/grades";
 import { CanvasStudent } from "src/hooks/students";
+import { TopHatCourse } from "src/api/top-hat/courses";
 
 declare global {
     interface Window {
@@ -18,6 +19,14 @@ declare global {
                 assignmentId: number,
                 studentId: number,
             ) => Promise<EndpointData<Submission>>;
+            getTopHatCourses: () => Promise<EndpointData<TopHatCourse[]>>;
+            getAttendanceItems: (
+                courseId: number,
+            ) => Promise<EndpointData<AttendanceItem[]>>;
+            getAttendanceRecords: (
+                courseId: number,
+                studentId: number,
+            ) => Promise<EndpointData<AttendanceRecord[]>>;
         };
     }
 }
