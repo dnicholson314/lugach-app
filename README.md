@@ -1,8 +1,8 @@
-LUGACH is a React application that makes Liberty GAs lives easier.
+LUGACH is an [Electron](https://www.electronjs.org/) application that makes Liberty GAs lives easier.
 
 See [the CLI/TUI version of LUGACH](https://github.com/dnicholson314/lugach) that spawned the idea for this application.
 
-To-dos:
+## To-dos
 
 - **Add encryption for secrets**
 - **Add manual linking of Top Hat courses to Canvas courses**
@@ -30,3 +30,4 @@ To-dos:
 - Clean up and organize main process API code
 - Add letter grades to grades table
 - Color-code late assignments
+- Review formatting standards for Prettier Markdown
