@@ -8,21 +8,29 @@ declare global {
     interface Window {
         api: {
             getCanvasCourses: () => Promise<EndpointData<CanvasCourse[]>>;
+
             getCanvasStudents: (
                 courseId: number,
             ) => Promise<EndpointData<CanvasStudent[]>>;
+
             getAssignments: (
                 courseId: number,
             ) => Promise<EndpointData<Assignment[]>>;
+
             getSubmission: (
                 courseId: number,
                 assignmentId: number,
                 studentId: number,
             ) => Promise<EndpointData<Submission>>;
+
             getTopHatCourses: () => Promise<EndpointData<TopHatCourse[]>>;
+
+            getTopHatStudents: () => Promise<EndpointData<TopHatStudent[]>>;
+
             getAttendanceItems: (
                 courseId: number,
             ) => Promise<EndpointData<AttendanceItem[]>>;
+
             getAttendanceRecords: (
                 courseId: number,
                 studentId: number,
