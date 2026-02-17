@@ -25,7 +25,9 @@ declare global {
 
             getTopHatCourses: () => Promise<EndpointData<TopHatCourse[]>>;
 
-            getTopHatStudents: () => Promise<EndpointData<TopHatStudent[]>>;
+            getTopHatStudents: (
+                courseId: number,
+            ) => Promise<EndpointData<TopHatStudent[]>>;
 
             getAttendanceItems: (
                 courseId: number,

@@ -49,7 +49,7 @@ export const handleGetAttendanceRecords = async (
     studentId: number,
 ): Promise<EndpointData<AttendanceRecord[]>> => {
     const data = await callEndpoint<AttendanceRecordEndpointStructure>(
-        `v1/gradeable_items/${courseId}/?limit=2000&student_ids=${studentId}`,
+        `gradebook/v1/gradeable_items/${courseId}/?limit=2000&student_ids=${studentId}`,
     );
 
     return {

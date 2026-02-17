@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { AttendanceItem, AttendanceRecord } from "src/api/top-hat/attendance";
 import { HookData } from "src/common/models";
 
-interface Attendance {
+export interface Attendance {
     id: number;
     date_taken: string;
     attended: boolean;

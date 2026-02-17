@@ -2,7 +2,9 @@ import { useState, useEffect } from "react";
 import { TopHatStudent } from "src/api/top-hat/students";
 import { HookData } from "src/common/models";
 
-export const useTopHatStudents = (): HookData<TopHatStudent[]> => {
+export const useTopHatStudents = (
+    courseId: number,
+): HookData<TopHatStudent[]> => {
     const [students, setStudents] = useState<TopHatStudent[]>([]);
     const [error, setError] = useState<string>();
     const [loading, setLoading] = useState<boolean>(false);
@@ -13,7 +15,7 @@ export const useTopHatStudents = (): HookData<TopHatStudent[]> => {
             setError(undefined);
 
             try {
-                const data = await window.api.getTopHatStudents();
+                const data = await window.api.getTopHatStudents(courseId);
                 setStudents(data.value);
                 setError(data.error);
             } catch (err) {
@@ -25,7 +27,7 @@ export const useTopHatStudents = (): HookData<TopHatStudent[]> => {
         };
 
         fetchStudents();
-    }, []);
+    }, [courseId]);
 
     return {
         value: students,
