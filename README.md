@@ -1,6 +1,10 @@
-LUGACH is an [Electron](https://www.electronjs.org/) application that makes Liberty GAs lives easier.
+# LUGACH (Liberty University GA Canvas Helps)
 
-See [the CLI/TUI version of LUGACH](https://github.com/dnicholson314/lugach) that spawned the idea for this application.
+LUGACH is an [Electron](https://www.electronjs.org/) application that makes
+Liberty GAs lives easier.
+
+See [the CLI/TUI version of LUGACH](https://github.com/dnicholson314/lugach)
+that spawned the idea for this application.
 
 ## To-dos
 
@@ -21,7 +25,7 @@ See [the CLI/TUI version of LUGACH](https://github.com/dnicholson314/lugach) tha
   - ~~Modify Attendance~~ (--> `modify_attendance`)
     - Handled in `StudentAttendanceTable`
   - Take Attendance (--> `take_attendance`)
-  - ~~Get Grades~~ (--> `get_grades`) 
+  - ~~Get Grades~~ (--> `get_grades`)
     - Handled in `StudentGradesTable`
 - Add dark mode
 - Add copy and paste shortcuts
