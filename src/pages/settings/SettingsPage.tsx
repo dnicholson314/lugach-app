@@ -20,6 +20,7 @@ export const SettingsPage = () => {
         value: credentials,
         error,
         loading: credentialsLoading,
+        fetchData,
     } = useCanvasCredentials();
     const [toastOpen, setToastOpen] = useState<boolean>(false);
     const [saveError, setSaveError] = useState<string>();
@@ -42,6 +43,7 @@ export const SettingsPage = () => {
             apiKey,
         });
 
+        await fetchData();
         setSaveError(nextSaveError);
         setToastOpen(true);
     };
