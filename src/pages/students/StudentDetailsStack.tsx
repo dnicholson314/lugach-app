@@ -11,9 +11,9 @@ import {
     Stack,
     Typography,
 } from "@mui/material";
-import { StudentAttendanceTable } from "src/components/StudentAttendanceTable";
-import { StudentGradesTable } from "src/components/StudentGradesTable";
-import { StudentInfoTable } from "src/components/StudentInfoTable";
+import { StudentAttendanceTable } from "./StudentAttendanceTable";
+import { StudentGradesTable } from "./StudentGradesTable";
+import { StudentInfoTable } from "./StudentInfoTable";
 
 interface StudentDetailsStackProps {
     courseId: number;
