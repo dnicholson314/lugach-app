@@ -1,7 +1,7 @@
 import { Alert } from "@mui/material";
 import { DataGrid, GridColDef, GridRowParams } from "@mui/x-data-grid";
 import { CanvasStudent } from "src/api/canvas/students";
-import { useCanvasStudents } from "src/hooks/students";
+import { useCanvasStudents } from "src/hooks/canvas/students";
 
 interface StudentsDataGridProps {
     courseId?: number;

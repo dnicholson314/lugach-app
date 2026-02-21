@@ -5,7 +5,7 @@ import {
     TextField,
 } from "@mui/material";
 import { CanvasCourse } from "src/api/canvas/courses";
-import { useCanvasCourses } from "src/hooks/courses";
+import { useCanvasCourses } from "src/hooks/canvas/courses";
 
 interface CourseSelectProps {
     onChange(course?: CanvasCourse): void;

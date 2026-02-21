@@ -8,7 +8,7 @@ import {
     TableRow,
 } from "@mui/material";
 import { CanvasStudent } from "src/api/canvas/students";
-import { useCanvasStudents } from "src/hooks/students";
+import { useCanvasStudents } from "src/hooks/canvas/students";
 
 interface StudentInfoTableProps {
     courseId: number;

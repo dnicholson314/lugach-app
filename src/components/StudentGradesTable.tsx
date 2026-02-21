@@ -9,7 +9,7 @@ import {
     TableRow,
     Typography,
 } from "@mui/material";
-import { Grade, useGrades } from "src/hooks/grades";
+import { Grade, useGrades } from "src/hooks/canvas/grades";
 
 interface StudentGradesTableProps {
     courseId: number;

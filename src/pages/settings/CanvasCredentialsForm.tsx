@@ -7,7 +7,7 @@ import {
     Box,
 } from "@mui/material";
 import { SubmitEvent, useState } from "react";
-import { useCanvasCredentials } from "src/hooks/secrets";
+import { useCanvasCredentials } from "src/hooks/canvas/secrets";
 
 const TOAST_DURATION_MS = 2000;
 

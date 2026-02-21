@@ -4,7 +4,7 @@ import {
     TreeViewDefaultItemModelProperties,
 } from "@mui/x-tree-view";
 import { CanvasCourse } from "src/api/canvas/courses";
-import { useCanvasCourses } from "src/hooks/courses";
+import { useCanvasCourses } from "src/hooks/canvas/courses";
 
 interface CoursesTreeViewProps {
     onCourseSelect: (courseId: number) => void;

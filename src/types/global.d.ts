@@ -1,7 +1,7 @@
 import { CanvasCourse } from "src/api/canvas/courses";
 import { EndpointData } from "src/common/models";
 import { Assignment } from "src/api/canvas/grades";
-import { CanvasStudent } from "src/hooks/students";
+import { CanvasStudent } from "src/hooks/canvas/students";
 import { TopHatCourse } from "src/api/top-hat/courses";
 import { IpcRenderer } from "electron";
 import { CanvasCredentials } from "src/api/canvas/base";
