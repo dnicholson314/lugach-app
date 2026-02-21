@@ -1,6 +1,6 @@
 import { Box, Stack, Typography } from "@mui/material";
 import { useState } from "react";
-import { CoursesTreeView } from "src/components/CoursesTreeView";
+import { CoursesTreeView } from "./CanvasCoursesTreeView";
 import { StudentsDataGrid } from "src/components/StudentsDataGrid";
 import { StudentDetailsStack } from "./StudentDetailsStack";
 

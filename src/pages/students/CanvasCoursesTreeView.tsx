@@ -34,8 +34,9 @@ export const CoursesTreeView = ({ onCourseSelect }: CoursesTreeViewProps) => {
         <>
             {coursesError ? (
                 <Alert severity="error">{coursesError}</Alert>
-            ) : null}
-            {!coursesLoading ? (
+            ) : coursesLoading ? (
+                <LinearProgress />
+            ) : (
                 <RichTreeView
                     items={courseTreeItems}
                     defaultExpandedItems={["canvas"]}
@@ -50,8 +51,6 @@ export const CoursesTreeView = ({ onCourseSelect }: CoursesTreeViewProps) => {
                         onCourseSelect(Number(itemId));
                     }}
                 />
-            ) : (
-                <LinearProgress />
             )}
         </>
     );
