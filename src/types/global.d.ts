@@ -5,6 +5,7 @@ import { CanvasStudent } from "src/hooks/canvas/students";
 import { TopHatCourse } from "src/api/top-hat/courses";
 import { IpcRenderer } from "electron";
 import { CanvasCredentials } from "src/api/canvas/base";
+import { Integrations } from "src/api/integrations";
 
 declare global {
     interface Window {
@@ -59,6 +60,13 @@ declare global {
                 courseId: number,
                 studentId: number,
             ) => Promise<EndpointData<AttendanceRecord[]>>;
+
+            getIntegrations: () => Promise<EndpointData<Integrations>>;
+
+            saveIntegration: (
+                canvasCourseId: number,
+                topHatCourseId: number | undefined,
+            ) => Promise<string | undefined>;
         };
     }
 }

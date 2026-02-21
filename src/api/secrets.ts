@@ -3,11 +3,11 @@ import path from "path";
 import { type BrowserContext } from "playwright";
 import os from "os";
 import { safeStorage } from "electron";
+import { ROOT_DIR } from "src/common/const";
 
 export type StorageState = Awaited<ReturnType<BrowserContext["storageState"]>>;
 
 const STORAGE_STATE_SECRET_NAME = "th_storage";
-const ROOT_DIR = path.join(os.homedir(), ".lugach", "app");
 const ENV_PATH = path.join(ROOT_DIR, ".env");
 
 const getEnvLines = async (): Promise<string[]> => {
@@ -51,8 +51,6 @@ export const setEnvValue = async (
     key: string,
     value: string,
 ): Promise<void> => {
-    // 1. Encrypt the value immediately
-    // We convert the resulting Buffer to 'base64' for easy storage in a text file
     let processedValue = value;
 
     if (safeStorage.isEncryptionAvailable()) {

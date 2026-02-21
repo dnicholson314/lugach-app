@@ -12,6 +12,7 @@ import { TopHatStudent } from "./api/top-hat/students";
 import { View } from "./pages/ViewContext";
 import { CanvasCredentials } from "./api/canvas/base";
 import { LibertyCredentials } from "./api/top-hat/base";
+import { Integrations } from "./api/integrations";
 
 contextBridge.exposeInMainWorld("api", {
     onUpdateView: (handleUpdateView: (view: View) => void): IpcRenderer =>
@@ -79,5 +80,18 @@ contextBridge.exposeInMainWorld("api", {
             "top-hat:get-attendance-records",
             courseId,
             studentId,
+        ),
+
+    getIntegrations: (): Promise<EndpointData<Integrations>> =>
+        ipcRenderer.invoke("integrations:get-integrations"),
+
+    saveIntegration: (
+        canvasCourseId: number,
+        topHatCourseId: number | undefined,
+    ): Promise<string | undefined> =>
+        ipcRenderer.invoke(
+            "integrations:save-integration",
+            canvasCourseId,
+            topHatCourseId,
         ),
 });

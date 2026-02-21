@@ -10,23 +10,34 @@ export const useTopHatStudents = (
     const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
+        let isCurrent = true;
+
         const fetchStudents = async () => {
             setLoading(true);
-            setError(undefined);
 
             try {
                 const data = await window.api.getTopHatStudents(courseId);
-                setStudents(data.value);
-                setError(data.error);
+                if (isCurrent) {
+                    setStudents(data.value);
+                    setError(data.error);
+                }
             } catch (err) {
-                setStudents([]);
-                setError(err instanceof Error ? err.message : String(err));
+                if (isCurrent) {
+                    setStudents([]);
+                    setError(err instanceof Error ? err.message : String(err));
+                }
             } finally {
-                setLoading(false);
+                if (isCurrent) {
+                    setLoading(false);
+                }
             }
         };
 
         fetchStudents();
+
+        return () => {
+            isCurrent = false;
+        };
     }, [courseId]);
 
     return {

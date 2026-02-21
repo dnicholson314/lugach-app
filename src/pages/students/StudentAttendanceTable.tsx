@@ -11,14 +11,11 @@ import {
     TableBody,
 } from "@mui/material";
 import { pink } from "@mui/material/colors";
-import { CanvasCourse } from "src/api/canvas/courses";
 import { CanvasStudent } from "src/api/canvas/students";
-import { TopHatCourse } from "src/api/top-hat/courses";
 import { TopHatStudent } from "src/api/top-hat/students";
-import { useCanvasCourses } from "src/hooks/canvas/courses";
 import { useCanvasStudents } from "src/hooks/canvas/students";
+import { useIntegrations } from "src/hooks/integrations";
 import { Attendance, useAttendance } from "src/hooks/top-hat/attendance";
-import { useTopHatCourses } from "src/hooks/top-hat/courses";
 import { useTopHatStudents } from "src/hooks/top-hat/students";
 
 interface StudentAttendanceTableProps {
@@ -31,23 +28,11 @@ export const StudentAttendanceTable = ({
     canvasStudentId,
 }: StudentAttendanceTableProps) => {
     const {
-        value: canvasCourses,
-        error: canvasCoursesError,
-        loading: canvasCoursesLoading,
-    } = useCanvasCourses();
-    const canvasCourse = canvasCourses.find(
-        (course: CanvasCourse): boolean => course.id === canvasCourseId,
-    );
-
-    const {
-        value: topHatCourses,
-        error: topHatCoursesError,
-        loading: topHatCoursesLoading,
-    } = useTopHatCourses();
-    const topHatCourse = topHatCourses.find(
-        (course: TopHatCourse): boolean =>
-            course.course_name === canvasCourse?.name,
-    );
+        value: integrations,
+        error: integrationsError,
+        loading: integrationsLoading,
+    } = useIntegrations();
+    const topHatCourseId = integrations?.[canvasCourseId];
 
     const {
         value: canvasStudents,
@@ -62,7 +47,7 @@ export const StudentAttendanceTable = ({
         value: topHatStudents,
         error: topHatStudentsError,
         loading: topHatStudentsLoading,
-    } = useTopHatStudents(topHatCourse?.course_id);
+    } = useTopHatStudents(topHatCourseId);
     const topHatStudent = topHatStudents.find(
         (student: TopHatStudent): boolean =>
             student.email === canvasStudent?.email,
@@ -72,31 +57,26 @@ export const StudentAttendanceTable = ({
         value: attendances,
         error: attendancesError,
         loading: attendancesLoading,
-    } = useAttendance(topHatCourse?.course_id, topHatStudent?.id);
+    } = useAttendance(topHatCourseId, topHatStudent?.id);
 
     const error =
-        canvasCoursesError ||
+        integrationsError ||
         canvasStudentsError ||
-        topHatCoursesError ||
         topHatStudentsError ||
         attendancesError;
-    let errorText: string;
+
+    let errorText = error;
     if (!error) {
         errorText = "";
-    } else if (error.includes("404")) {
-        errorText = "Could not retrieve Top Hat course.";
-    } else if (error.includes("500")) {
+    } else if (error.includes("404") || error.includes("500")) {
         errorText = "Could not retrieve attendance records for this student.";
     } else if (error.includes("Unable to obtain JWT token")) {
         errorText = "The provided Top Hat credentials were invalid.";
-    } else {
-        errorText = "An error occurred.";
     }
 
     const loading =
-        canvasCoursesLoading ||
+        integrationsLoading ||
         canvasStudentsLoading ||
-        topHatCoursesLoading ||
         topHatStudentsLoading ||
         attendancesLoading;
 
@@ -119,26 +99,20 @@ export const StudentAttendanceTable = ({
                         </TableHead>
                         <TableBody>
                             {attendances.map((attendance: Attendance) => (
-                                <>
-                                    <TableRow
-                                        key={`submission-${attendance.id}`}
-                                    >
-                                        <TableCell>
-                                            {attendance.date_taken}
-                                        </TableCell>
-                                        <TableCell>
-                                            {attendance.excused ? (
-                                                <CheckBoxOutlined color="primary" />
-                                            ) : attendance.attended ? (
-                                                <CheckBox color="success" />
-                                            ) : (
-                                                <Clear
-                                                    sx={{ color: pink[500] }}
-                                                />
-                                            )}
-                                        </TableCell>
-                                    </TableRow>
-                                </>
+                                <TableRow key={`submission-${attendance.id}`}>
+                                    <TableCell>
+                                        {attendance.date_taken}
+                                    </TableCell>
+                                    <TableCell>
+                                        {attendance.excused ? (
+                                            <CheckBoxOutlined color="primary" />
+                                        ) : attendance.attended ? (
+                                            <CheckBox color="success" />
+                                        ) : (
+                                            <Clear sx={{ color: pink[500] }} />
+                                        )}
+                                    </TableCell>
+                                </TableRow>
                             ))}
                         </TableBody>
                     </Table>

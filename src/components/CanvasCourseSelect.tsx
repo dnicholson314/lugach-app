@@ -8,11 +8,11 @@ import { CanvasCourse } from "src/api/canvas/courses";
 import { useCanvasCourses } from "src/hooks/canvas/courses";
 
 interface CourseSelectProps {
-    onChange(course?: CanvasCourse): void;
+    onChange?: (course?: CanvasCourse) => void;
     sx?: SxProps;
 }
 
-export const CourseSelect = ({ onChange, sx }: CourseSelectProps) => {
+export const CanvasCourseSelect = ({ onChange, sx }: CourseSelectProps) => {
     const { value: courses, loading } = useCanvasCourses();
 
     return (
@@ -21,11 +21,11 @@ export const CourseSelect = ({ onChange, sx }: CourseSelectProps) => {
             options={courses}
             sx={sx}
             renderInput={(params: AutocompleteRenderInputParams) => (
-                <TextField {...params} label="Course" />
+                <TextField {...params} label="Canvas course" />
             )}
             getOptionLabel={(option: CanvasCourse) => option.name}
             loading={loading}
-            onChange={(_, value) => onChange(value)}
+            onChange={(_, value) => onChange?.(value)}
         />
     );
 };

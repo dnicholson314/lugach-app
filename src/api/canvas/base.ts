@@ -49,7 +49,7 @@ export const handleSaveCanvasCredentials = async (
     nextCredentials: CanvasCredentials,
 ): Promise<string | undefined> => {
     try {
-        setCanvasCredentials(nextCredentials);
+        await setCanvasCredentials(nextCredentials);
     } catch (error) {
         return error instanceof Error ? error.message : String(error);
     }

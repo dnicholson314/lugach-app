@@ -25,7 +25,7 @@ export const CanvasCredentialsForm = () => {
         setToastOpen(false);
     };
 
-    const handleSaveCanvasCredentials = async (
+    const handleSubmitForm = async (
         event: SubmitEvent<HTMLFormElement>,
     ): Promise<void> => {
         event.preventDefault();
@@ -49,7 +49,7 @@ export const CanvasCredentialsForm = () => {
         <CircularProgress />
     ) : (
         <Box mt="5px">
-            <form onSubmit={handleSaveCanvasCredentials}>
+            <form onSubmit={handleSubmitForm}>
                 <TextField
                     defaultValue={credentials?.apiUrl}
                     required
