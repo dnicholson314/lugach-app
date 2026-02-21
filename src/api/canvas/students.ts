@@ -14,6 +14,6 @@ export const handleGetCanvasStudents = async (
     courseId: number,
 ): Promise<EndpointData<CanvasStudent[]>> => {
     const endpoint = `courses/${courseId}/users?enrollment_type=student`;
-    const data = callEndpoint<CanvasStudent[]>(endpoint);
+    const data = callEndpoint<CanvasStudent[]>(endpoint, []);
     return data;
 };

@@ -57,12 +57,13 @@ export const handleSaveCanvasCredentials = async (
 
 export const callEndpoint = async <E>(
     endpoint: string,
+    fallback?: E,
 ): Promise<EndpointData<E | undefined>> => {
     try {
         const { apiUrl, apiKey } = await getCanvasCredentials();
         if (!apiUrl || !apiKey) {
             return {
-                value: undefined,
+                value: fallback ?? undefined,
                 error: "Missing Canvas credentials.",
             };
         }
@@ -76,7 +77,7 @@ export const callEndpoint = async <E>(
 
         if (!response.ok) {
             return {
-                value: undefined,
+                value: fallback ?? undefined,
                 error: `Canvas API error: ${response.status} ${response.statusText}`,
             };
         }
@@ -88,7 +89,7 @@ export const callEndpoint = async <E>(
         };
     } catch (error) {
         return {
-            value: undefined,
+            value: fallback ?? undefined,
             error: `Runtime error: ${error instanceof Error ? error.message : String(error)}`,
         };
     }

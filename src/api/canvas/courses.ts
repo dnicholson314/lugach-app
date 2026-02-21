@@ -10,6 +10,6 @@ export interface CanvasCourse {
 export const handleGetCanvasCourses = async (): Promise<
     EndpointData<CanvasCourse[]>
 > => {
-    const nextData = await callEndpoint<CanvasCourse[]>("courses");
+    const nextData = await callEndpoint<CanvasCourse[]>("courses", []);
     return nextData;
 };
