@@ -2,6 +2,7 @@ import fs, { promises as fsAsync } from "fs";
 import path from "path";
 import { type BrowserContext } from "playwright";
 import os from "os";
+import { safeStorage } from "electron";
 
 export type StorageState = Awaited<ReturnType<BrowserContext["storageState"]>>;
 
@@ -27,22 +28,49 @@ export const getEnvValue = async (key: string): Promise<string | undefined> => {
     const matchedLine = envLines.find(
         (line: string): boolean => line.split("=")[0] === key,
     );
-    return matchedLine ? matchedLine.split("=")[1] : undefined;
+    const rawValue = matchedLine ? matchedLine.split("=")[1] : undefined;
+
+    try {
+        if (!safeStorage.isEncryptionAvailable()) {
+            // Return the raw value, since we probably saved the value in an
+            // unencrypted format
+            console.warn(
+                "Encryption not available, so values have been returned in plain text.",
+            );
+            return rawValue;
+        }
+
+        const buffer = Buffer.from(rawValue, "base64");
+        return safeStorage.decryptString(buffer);
+    } catch {
+        return undefined;
+    }
 };
 
 export const setEnvValue = async (
     key: string,
     value: string,
 ): Promise<void> => {
-    const newLine = `${key}=${value}`;
+    // 1. Encrypt the value immediately
+    // We convert the resulting Buffer to 'base64' for easy storage in a text file
+    let processedValue = value;
+
+    if (safeStorage.isEncryptionAvailable()) {
+        const encryptedBuffer = safeStorage.encryptString(value);
+        processedValue = encryptedBuffer.toString("base64");
+    } else {
+        console.warn("Encryption not available. Storing value in plain text.");
+    }
+
+    const newLine = `${key}=${processedValue}`;
     const envLines = await getEnvLines();
-    const targetLine = envLines.find(
+
+    const targetLineIndex = envLines.findIndex(
         (line: string): boolean => line.split("=")[0] === key,
     );
 
-    if (targetLine) {
-        const targetLineIndex = envLines.indexOf(targetLine);
-        envLines.splice(targetLineIndex, 1, newLine);
+    if (targetLineIndex !== -1) {
+        envLines[targetLineIndex] = newLine;
     } else {
         envLines.push(newLine);
     }
