@@ -14,10 +14,12 @@ interface TopHatCourseEndpointStructure {
 export const handleGetTopHatCourses = async (): Promise<
     EndpointData<TopHatCourse[]>
 > => {
-    const data =
-        await callEndpoint<TopHatCourseEndpointStructure>("v2/courses");
+    const data = await callEndpoint<TopHatCourseEndpointStructure>(
+        "v2/courses",
+        { objects: [] },
+    );
     return {
-        value: data.value?.objects,
+        value: data.value.objects,
         error: data.error,
     };
 };

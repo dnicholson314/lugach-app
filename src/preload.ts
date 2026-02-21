@@ -11,6 +11,7 @@ import { AttendanceItem, AttendanceRecord } from "./api/top-hat/attendance";
 import { TopHatStudent } from "./api/top-hat/students";
 import { View } from "./pages/ViewContext";
 import { CanvasCredentials } from "./api/canvas/base";
+import { LibertyCredentials } from "./api/top-hat/base";
 
 contextBridge.exposeInMainWorld("api", {
     onUpdateView: (handleUpdateView: (view: View) => void): IpcRenderer =>
@@ -48,6 +49,14 @@ contextBridge.exposeInMainWorld("api", {
             assignmentId,
             studentId,
         ),
+
+    getLibertyCredentials: (): Promise<EndpointData<LibertyCredentials>> =>
+        ipcRenderer.invoke("liberty:get-credentials"),
+
+    saveLibertyCredentials: (
+        nextCredentials: LibertyCredentials,
+    ): Promise<string | undefined> =>
+        ipcRenderer.invoke("liberty:save-credentials", nextCredentials),
 
     getTopHatCourses: (): Promise<EndpointData<TopHatCourse[]>> =>
         ipcRenderer.invoke("top-hat:get-courses"),

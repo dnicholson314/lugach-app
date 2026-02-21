@@ -37,6 +37,14 @@ declare global {
                 studentId: number,
             ) => Promise<EndpointData<Submission>>;
 
+            getLibertyCredentials: () => Promise<
+                EndpointData<LibertyCredentials>
+            >;
+
+            saveLibertyCredentials: (
+                nextCredentials: LibertyCredentials,
+            ) => Promise<string | undefined>;
+
             getTopHatCourses: () => Promise<EndpointData<TopHatCourse[]>>;
 
             getTopHatStudents: (

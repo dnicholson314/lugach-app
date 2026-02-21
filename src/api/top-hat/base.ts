@@ -6,13 +6,14 @@ import {
     setEnvValue,
 } from "../secrets";
 import { chromium, Request } from "playwright";
+import { IpcMainInvokeEvent } from "electron";
 
 const LIBERTY_USERNAME_SECRET_NAME = "LIBERTY_USERNAME";
 const LIBERTY_PASSWORD_SECRET_NAME = "LIBERTY_PASSWORD";
 const AUTH_REQUEST_KEY_NAME = "th_jwt_refresh";
 const AUTH_KEY_SECRET_NAME = "TH_AUTH_KEY";
 
-interface LibertyCredentials {
+export interface LibertyCredentials {
     libertyUsername: string;
     libertyPassword: string;
 }
@@ -25,6 +26,47 @@ export const getLibertyCredentials = async (): Promise<LibertyCredentials> => {
         libertyUsername: libertyUsername,
         libertyPassword: libertyPassword,
     };
+};
+
+export const setLibertyCredentials = async (
+    nextCredentials: LibertyCredentials,
+): Promise<void> => {
+    await setEnvValue(
+        LIBERTY_USERNAME_SECRET_NAME,
+        nextCredentials.libertyUsername,
+    );
+    await setEnvValue(
+        LIBERTY_PASSWORD_SECRET_NAME,
+        nextCredentials.libertyPassword,
+    );
+};
+
+export const handleGetLibertyCredentials = async (): Promise<
+    EndpointData<LibertyCredentials>
+> => {
+    try {
+        const libertyCredentials = await getLibertyCredentials();
+        return {
+            value: libertyCredentials,
+            error: undefined,
+        };
+    } catch (error) {
+        return {
+            value: undefined,
+            error: error instanceof Error ? error.message : String(error),
+        };
+    }
+};
+
+export const handleSaveLibertyCredentials = async (
+    _: IpcMainInvokeEvent,
+    nextCredentials: LibertyCredentials,
+): Promise<string | undefined> => {
+    try {
+        setLibertyCredentials(nextCredentials);
+    } catch (error) {
+        return error instanceof Error ? error.message : String(error);
+    }
 };
 
 export const saveTopHatStorageState = async (): Promise<void> => {
@@ -155,6 +197,7 @@ const getAuthTokenForSession = async (): Promise<string> => {
 
 export const callEndpoint = async <E>(
     endpoint: string,
+    fallback?: E,
 ): Promise<EndpointData<E | undefined>> => {
     try {
         const apiToken = await getAuthTokenForSession();
@@ -167,7 +210,7 @@ export const callEndpoint = async <E>(
 
         if (!response.ok) {
             return {
-                value: undefined,
+                value: fallback,
                 error: `Top Hat error: ${response.status} ${response.statusText}`,
             };
         }
@@ -179,7 +222,7 @@ export const callEndpoint = async <E>(
         };
     } catch (error) {
         return {
-            value: undefined,
+            value: fallback,
             error: `Runtime error: ${error instanceof Error ? error.message : String(error)}`,
         };
     }

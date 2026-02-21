@@ -17,9 +17,7 @@ export const handleGetTopHatStudents = async (
 ): Promise<EndpointData<TopHatStudent[]>> => {
     const data = await callEndpoint<TopHatStudent[]>(
         `v3/course/${courseId}/students/`,
+        [],
     );
-    return {
-        value: data.value ?? [],
-        error: data.error,
-    };
+    return data;
 };

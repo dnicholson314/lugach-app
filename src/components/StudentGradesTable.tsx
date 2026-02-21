@@ -42,23 +42,21 @@ export const StudentGradesTable = ({
                         </TableHead>
                         <TableBody>
                             {grades.map((grade: Grade) => (
-                                <>
-                                    <TableRow key={`submission-${grade.id}`}>
-                                        <TableCell>
-                                            <a
-                                                href={grade.html_url}
-                                                target="_blank"
-                                            >
-                                                {grade.name}
-                                            </a>
-                                        </TableCell>
-                                        <TableCell>{grade.due_at}</TableCell>
-                                        <TableCell>{grade.score}</TableCell>
-                                        <TableCell>
-                                            {grade.points_possible}
-                                        </TableCell>
-                                    </TableRow>
-                                </>
+                                <TableRow key={`submission-${grade.id}`}>
+                                    <TableCell>
+                                        <a
+                                            href={grade.html_url}
+                                            target="_blank"
+                                        >
+                                            {grade.name}
+                                        </a>
+                                    </TableCell>
+                                    <TableCell>{grade.due_at}</TableCell>
+                                    <TableCell>{grade.score}</TableCell>
+                                    <TableCell>
+                                        {grade.points_possible}
+                                    </TableCell>
+                                </TableRow>
                             ))}
                         </TableBody>
                     </Table>

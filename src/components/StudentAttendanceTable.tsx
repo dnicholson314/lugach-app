@@ -87,6 +87,8 @@ export const StudentAttendanceTable = ({
         errorText = "Could not retrieve Top Hat course.";
     } else if (error.includes("500")) {
         errorText = "Could not retrieve attendance records for this student.";
+    } else if (error.includes("Unable to obtain JWT token")) {
+        errorText = "The provided Top Hat credentials were invalid.";
     } else {
         errorText = "An error occurred.";
     }

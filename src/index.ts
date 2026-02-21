@@ -14,6 +14,8 @@ import { handleGetTopHatCourses } from "./api/top-hat/courses";
 import {
     saveTopHatStorageState,
     refreshTopHatAuthKey,
+    handleGetLibertyCredentials,
+    handleSaveLibertyCredentials,
 } from "./api/top-hat/base";
 import {
     handleGetAttendanceItems,
@@ -123,6 +125,9 @@ ipcMain.handle("canvas:get-courses", handleGetCanvasCourses);
 ipcMain.handle("canvas:get-students", handleGetCanvasStudents);
 ipcMain.handle("canvas:get-assignments", handleGetAssignments);
 ipcMain.handle("canvas:get-submission", handleGetSubmission);
+
+ipcMain.handle("liberty:get-credentials", handleGetLibertyCredentials);
+ipcMain.handle("liberty:save-credentials", handleSaveLibertyCredentials);
 
 ipcMain.handle("top-hat:get-courses", handleGetTopHatCourses);
 ipcMain.handle("top-hat:get-students", handleGetTopHatStudents);
