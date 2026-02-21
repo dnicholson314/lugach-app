@@ -1,10 +1,11 @@
 import { EndpointData } from "src/common/models";
-import { getEnvValue } from "../secrets";
+import { getEnvValue, setEnvValue } from "../secrets";
+import { IpcMainInvokeEvent } from "electron";
 
 const CANVAS_API_URL_SECRET_NAME = "CANVAS_API_URL";
 const CANVAS_API_KEY_SECRET_NAME = "CANVAS_API_KEY";
 
-interface CanvasCredentials {
+export interface CanvasCredentials {
     apiUrl: string;
     apiKey: string;
 }
@@ -17,6 +18,41 @@ const getCanvasCredentials = async (): Promise<CanvasCredentials> => {
         apiUrl: apiUrl,
         apiKey: apiKey,
     };
+};
+
+const setCanvasCredentials = async (
+    nextCredentials: CanvasCredentials,
+): Promise<void> => {
+    await setEnvValue(CANVAS_API_URL_SECRET_NAME, nextCredentials.apiUrl);
+    await setEnvValue(CANVAS_API_KEY_SECRET_NAME, nextCredentials.apiKey);
+};
+
+export const handleGetCanvasCredentials = async (): Promise<
+    EndpointData<CanvasCredentials>
+> => {
+    try {
+        const canvasCredentials = await getCanvasCredentials();
+        return {
+            value: canvasCredentials,
+            error: undefined,
+        };
+    } catch (error) {
+        return {
+            value: undefined,
+            error: error instanceof Error ? error.message : String(error),
+        };
+    }
+};
+
+export const handleSaveCanvasCredentials = async (
+    _: IpcMainInvokeEvent,
+    nextCredentials: CanvasCredentials,
+): Promise<string | undefined> => {
+    try {
+        setCanvasCredentials(nextCredentials);
+    } catch (error) {
+        return error instanceof Error ? error.message : String(error);
+    }
 };
 
 export const callEndpoint = async <E>(

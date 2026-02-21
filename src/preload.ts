@@ -1,16 +1,31 @@
 // See the Electron documentation for details on how to use preload scripts:
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 
-import { contextBridge, ipcRenderer } from "electron";
+import { contextBridge, IpcRenderer, ipcRenderer } from "electron";
 import { EndpointData } from "./common/models";
 import { CanvasStudent } from "./api/canvas/students";
 import { CanvasCourse } from "./api/canvas/courses";
-import { Assignment } from "./api/canvas/grades";
+import { Assignment, Submission } from "./api/canvas/grades";
 import { TopHatCourse } from "./api/top-hat/courses";
 import { AttendanceItem, AttendanceRecord } from "./api/top-hat/attendance";
 import { TopHatStudent } from "./api/top-hat/students";
+import { View } from "./pages/ViewContext";
+import { CanvasCredentials } from "./api/canvas/base";
 
 contextBridge.exposeInMainWorld("api", {
+    onUpdateView: (handleUpdateView: (view: View) => void): IpcRenderer =>
+        ipcRenderer.on("update-view", (_event, view: View) => {
+            handleUpdateView(view);
+        }),
+
+    getCanvasCredentials: (): Promise<EndpointData<CanvasCredentials>> =>
+        ipcRenderer.invoke("canvas:get-credentials"),
+
+    saveCanvasCredentials: (
+        nextCredentials: CanvasCredentials,
+    ): Promise<string | undefined> =>
+        ipcRenderer.invoke("canvas:save-credentials", nextCredentials),
+
     getCanvasCourses: (): Promise<EndpointData<CanvasCourse[]>> =>
         ipcRenderer.invoke("canvas:get-courses"),
 
@@ -26,7 +41,7 @@ contextBridge.exposeInMainWorld("api", {
         courseId: number,
         assignmentId: number,
         studentId: number,
-    ) =>
+    ): Promise<EndpointData<Submission>> =>
         ipcRenderer.invoke(
             "canvas:get-submission",
             courseId,

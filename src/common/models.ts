@@ -6,3 +6,7 @@ export type EndpointData<E> = {
 export type HookData<E> = EndpointData<E> & {
     loading: boolean;
 };
+
+export type FetchableHookData<E> = HookData<E> & {
+    fetchData: () => Promise<void>;
+};

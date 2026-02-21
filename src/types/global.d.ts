@@ -3,10 +3,24 @@ import { EndpointData } from "src/common/models";
 import { Assignment } from "src/api/canvas/grades";
 import { CanvasStudent } from "src/hooks/students";
 import { TopHatCourse } from "src/api/top-hat/courses";
+import { IpcRenderer } from "electron";
+import { CanvasCredentials } from "src/api/canvas/base";
 
 declare global {
     interface Window {
         api: {
+            onUpdateView: (
+                handleUpdateView: (view: View) => void,
+            ) => IpcRenderer;
+
+            getCanvasCredentials: () => Promise<
+                EndpointData<CanvasCredentials>
+            >;
+
+            saveCanvasCredentials: (
+                nextCredentials: CanvasCredentials,
+            ) => Promise<string | undefined>;
+
             getCanvasCourses: () => Promise<EndpointData<CanvasCourse[]>>;
 
             getCanvasStudents: (

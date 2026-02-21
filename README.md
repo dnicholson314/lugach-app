@@ -35,3 +35,4 @@ that spawned the idea for this application.
 - Add letter grades to grades table
 - Color-code late assignments
 - Review formatting standards for Prettier Markdown
+- Add error boundaries around components

@@ -47,7 +47,7 @@ export const setEnvValue = async (
         envLines.push(newLine);
     }
 
-    await fsAsync.writeFile(ENV_PATH, envLines.join(os.EOL), "utf-8");
+    fs.writeFileSync(ENV_PATH, envLines.join(os.EOL), "utf-8");
 };
 
 export const saveStorageState = async (
