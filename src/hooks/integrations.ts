@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Integrations } from "src/api/integrations";
-import { FetchableHookData, HookData } from "src/common/models";
+import { FetchableHookData } from "src/common/models";
 
 export const useIntegrations = (): FetchableHookData<Integrations> => {
     const [integrations, setIntegrations] = useState<Integrations>();
