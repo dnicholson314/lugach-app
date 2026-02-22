@@ -2,7 +2,7 @@
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 
 import { contextBridge, IpcRenderer, ipcRenderer } from "electron";
-import { EndpointData } from "./common/models";
+import { AttendanceOption, EndpointData } from "./common/models";
 import { CanvasStudent } from "./api/canvas/students";
 import { CanvasCourse } from "./api/canvas/courses";
 import { Assignment, Submission } from "./api/canvas/grades";
@@ -80,6 +80,20 @@ contextBridge.exposeInMainWorld("api", {
             "top-hat:get-attendance-records",
             courseId,
             studentId,
+        ),
+
+    editAttendance: (
+        courseId: number,
+        studentId: number,
+        attendanceItemId: string,
+        newAttendance: AttendanceOption,
+    ): Promise<EndpointData<undefined>> =>
+        ipcRenderer.invoke(
+            "top-hat:edit-attendance",
+            courseId,
+            studentId,
+            attendanceItemId,
+            newAttendance,
         ),
 
     getIntegrations: (): Promise<EndpointData<Integrations>> =>

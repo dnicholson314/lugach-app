@@ -10,3 +10,5 @@ export type HookData<E> = EndpointData<E> & {
 export type FetchableHookData<E> = HookData<E> & {
     fetchData: () => Promise<void>;
 };
+
+export type AttendanceOption = "present" | "absent" | "excused";

@@ -17,7 +17,7 @@ export const handleGetTopHatStudents = async (
 ): Promise<EndpointData<TopHatStudent[]>> => {
     const data = await callEndpoint<TopHatStudent[]>(
         `v3/course/${courseId}/students/`,
-        [],
+        { fallback: [] },
     );
     return data;
 };

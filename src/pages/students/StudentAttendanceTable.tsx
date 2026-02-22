@@ -9,6 +9,7 @@ import {
     TableRow,
     TableCell,
     TableBody,
+    Box,
 } from "@mui/material";
 import { pink } from "@mui/material/colors";
 import { CanvasStudent } from "src/api/canvas/students";
@@ -17,16 +18,24 @@ import { useCanvasStudents } from "src/hooks/canvas/students";
 import { useIntegrations } from "src/hooks/integrations";
 import { Attendance, useAttendance } from "src/hooks/top-hat/attendance";
 import { useTopHatStudents } from "src/hooks/top-hat/students";
+import { AttendanceEditButton } from "./AttendanceEditButton";
+import { useState } from "react";
+import { AttendanceOption } from "src/common/models";
 
 interface StudentAttendanceTableProps {
     canvasCourseId: number;
     canvasStudentId: number;
 }
 
+type OptimisticUpdates = Record<number, AttendanceOption>;
+
 export const StudentAttendanceTable = ({
     canvasCourseId,
     canvasStudentId,
 }: StudentAttendanceTableProps) => {
+    const [optimisticUpdates, setOptimisticUpdates] =
+        useState<OptimisticUpdates>({});
+
     const {
         value: integrations,
         error: integrationsError,
@@ -80,13 +89,36 @@ export const StudentAttendanceTable = ({
         topHatStudentsLoading ||
         attendancesLoading;
 
+    const handleAttendanceUpdated = (
+        updatedAttendance: Attendance,
+        newStatus: AttendanceOption,
+    ): void => {
+        setOptimisticUpdates(
+            (previous: OptimisticUpdates): OptimisticUpdates => ({
+                ...previous,
+                [updatedAttendance.id]: newStatus,
+            }),
+        );
+    };
+
+    const displayAttendances = attendances.map((attendance) => {
+        const localStatus = optimisticUpdates[attendance.id];
+        if (!localStatus) return attendance;
+
+        return {
+            ...attendance,
+            attended: localStatus === "present",
+            excused: localStatus === "excused",
+        };
+    });
+
     return (
-        <>
+        <Box>
             {error ? (
                 <Alert severity="error">{errorText}</Alert>
             ) : loading ? (
                 <LinearProgress />
-            ) : !attendances.length ? (
+            ) : !topHatStudent || !attendances.length ? (
                 <Typography>No attendance history found.</Typography>
             ) : (
                 <TableContainer>
@@ -95,29 +127,48 @@ export const StudentAttendanceTable = ({
                             <TableRow>
                                 <TableCell>Date</TableCell>
                                 <TableCell>Status</TableCell>
+                                <TableCell sx={{ textAlign: "center" }}>
+                                    Edit
+                                </TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {attendances.map((attendance: Attendance) => (
-                                <TableRow key={`submission-${attendance.id}`}>
-                                    <TableCell>
-                                        {attendance.date_taken}
-                                    </TableCell>
-                                    <TableCell>
-                                        {attendance.excused ? (
-                                            <CheckBoxOutlined color="primary" />
-                                        ) : attendance.attended ? (
-                                            <CheckBox color="success" />
-                                        ) : (
-                                            <Clear sx={{ color: pink[500] }} />
-                                        )}
-                                    </TableCell>
-                                </TableRow>
-                            ))}
+                            {displayAttendances.map(
+                                (attendance: Attendance) => (
+                                    <TableRow
+                                        key={`submission-${attendance.id}`}
+                                    >
+                                        <TableCell>
+                                            {attendance.date_taken}
+                                        </TableCell>
+                                        <TableCell>
+                                            {attendance.excused ? (
+                                                <CheckBoxOutlined color="primary" />
+                                            ) : attendance.attended ? (
+                                                <CheckBox color="success" />
+                                            ) : (
+                                                <Clear
+                                                    sx={{ color: pink[500] }}
+                                                />
+                                            )}
+                                        </TableCell>
+                                        <TableCell sx={{ textAlign: "center" }}>
+                                            <AttendanceEditButton
+                                                courseId={topHatCourseId}
+                                                studentId={topHatStudent.id}
+                                                attendance={attendance}
+                                                onAttendanceUpdated={
+                                                    handleAttendanceUpdated
+                                                }
+                                            />
+                                        </TableCell>
+                                    </TableRow>
+                                ),
+                            )}
                         </TableBody>
                     </Table>
                 </TableContainer>
             )}
-        </>
+        </Box>
     );
 };

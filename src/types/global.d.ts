@@ -6,6 +6,7 @@ import { TopHatCourse } from "src/api/top-hat/courses";
 import { IpcRenderer } from "electron";
 import { CanvasCredentials } from "src/api/canvas/base";
 import { Integrations } from "src/api/integrations";
+import { AttendanceOption } from "src/api/top-hat/attendance";
 
 declare global {
     interface Window {
@@ -60,6 +61,13 @@ declare global {
                 courseId: number,
                 studentId: number,
             ) => Promise<EndpointData<AttendanceRecord[]>>;
+
+            editAttendance: (
+                courseId: number,
+                studentId: number,
+                attendanceItemId: string,
+                newAttendance: AttendanceOption,
+            ) => Promise<EndpointData<undefined>>;
 
             getIntegrations: () => Promise<EndpointData<Integrations>>;
 

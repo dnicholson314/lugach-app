@@ -16,7 +16,7 @@ export const handleGetTopHatCourses = async (): Promise<
 > => {
     const data = await callEndpoint<TopHatCourseEndpointStructure>(
         "v2/courses",
-        { objects: [] },
+        { fallback: { objects: [] } },
     );
     return {
         value: data.value.objects,

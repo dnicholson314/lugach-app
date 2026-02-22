@@ -33,10 +33,8 @@ export const getEnvValue = async (key: string): Promise<string | undefined> => {
     try {
         if (!safeStorage.isEncryptionAvailable()) {
             // Return the raw value, since we probably saved the value in an
-            // unencrypted format
-            console.warn(
-                "Encryption not available, so values have been returned in plain text.",
-            );
+            // unencrypted format. This takes place in WSL and in other contexts
+            // where no system keyring is available.
             return rawValue;
         }
 
@@ -57,7 +55,9 @@ export const setEnvValue = async (
         const encryptedBuffer = safeStorage.encryptString(value);
         processedValue = encryptedBuffer.toString("base64");
     } else {
-        console.warn("Encryption not available. Storing value in plain text.");
+        // Since encryption is not available, we'll store the value in plain
+        // text. This takes place in WSL and in other contexts where no system
+        // keyring is available.
     }
 
     const newLine = `${key}=${processedValue}`;

@@ -7,6 +7,7 @@ import {
 } from "../secrets";
 import { chromium, Request } from "playwright";
 import { IpcMainInvokeEvent } from "electron";
+import { HttpMethod } from "src/common/const";
 
 const LIBERTY_USERNAME_SECRET_NAME = "LIBERTY_USERNAME";
 const LIBERTY_PASSWORD_SECRET_NAME = "LIBERTY_PASSWORD";
@@ -16,6 +17,12 @@ const AUTH_KEY_SECRET_NAME = "TH_AUTH_KEY";
 export interface LibertyCredentials {
     libertyUsername: string;
     libertyPassword: string;
+}
+
+export interface CallEndpointOptions<E, D> {
+    method?: HttpMethod;
+    data?: D;
+    fallback?: E;
 }
 
 export const getLibertyCredentials = async (): Promise<LibertyCredentials> => {
@@ -195,35 +202,40 @@ const getAuthTokenForSession = async (): Promise<string> => {
     return jwtToken;
 };
 
-export const callEndpoint = async <E>(
+export const callEndpoint = async <E, D = undefined>(
     endpoint: string,
-    fallback?: E,
+    options?: CallEndpointOptions<E, D>,
 ): Promise<EndpointData<E | undefined>> => {
+    let value: E, error: string;
     try {
         const apiToken = await getAuthTokenForSession();
         const url = `https://app.tophat.com/api/${endpoint}`;
+        const body = options?.data ? JSON.stringify(options.data) : undefined;
+
         const response = await fetch(url, {
+            method: options?.method ?? "GET",
             headers: {
                 Authorization: `Bearer ${apiToken}`,
+                "Content-Type": "application/json",
             },
+            body,
         });
 
         if (!response.ok) {
-            return {
-                value: fallback,
-                error: `Top Hat error: ${response.status} ${response.statusText}`,
-            };
+            value = options?.fallback;
+            error = `Top Hat error: ${response.status} ${response.statusText}`;
+            console.log(await response.text(), response.url);
+        } else {
+            value = await response.json();
+            error = undefined;
         }
-
-        const nextData = await response.json();
-
-        return {
-            value: nextData,
-        };
-    } catch (error) {
-        return {
-            value: fallback,
-            error: `Runtime error: ${error instanceof Error ? error.message : String(error)}`,
-        };
+    } catch (exception) {
+        value = options?.fallback;
+        error = `Runtime error: ${exception instanceof Error ? exception.message : String(exception)}`;
     }
+
+    return {
+        value,
+        error,
+    };
 };

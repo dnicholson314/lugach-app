@@ -27,6 +27,7 @@ that spawned the idea for this application.
   - Take Attendance (--> `take_attendance`)
   - ~~Get Grades~~ (--> `get_grades`)
     - Handled in `StudentGradesTable`
+- Add option to see all students in one view
 - Add dark mode
 - Add copy and paste shortcuts
 - Tweak styles of app

@@ -18,6 +18,7 @@ import {
     handleSaveLibertyCredentials,
 } from "./api/top-hat/base";
 import {
+    handleEditAttendance,
     handleGetAttendanceItems,
     handleGetAttendanceRecords,
 } from "./api/top-hat/attendance";
@@ -137,6 +138,7 @@ ipcMain.handle("top-hat:get-courses", handleGetTopHatCourses);
 ipcMain.handle("top-hat:get-students", handleGetTopHatStudents);
 ipcMain.handle("top-hat:get-attendance-items", handleGetAttendanceItems);
 ipcMain.handle("top-hat:get-attendance-records", handleGetAttendanceRecords);
+ipcMain.handle("top-hat:edit-attendance", handleEditAttendance);
 
 ipcMain.handle("integrations:get-integrations", handleGetIntegrations);
 ipcMain.handle("integrations:save-integration", handleSaveIntegration);
