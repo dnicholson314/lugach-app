@@ -11,7 +11,7 @@ that spawned the idea for this application.
 - ~~**Add encryption for secrets**~~
 - ~~**Add settings page**~~
 - ~~**Add manual linking of Top Hat courses to Canvas courses**~~
-- Add attendance editing
+- ~~Add attendance editing~~
 - Add grade and due date editing
 - Port over applications from TUI
   - Flag Absent Students (--> `identify_absent_students`)
@@ -35,6 +35,9 @@ that spawned the idea for this application.
 - Clean up and organize main process API code
 - Add letter grades to grades table
 - Color-code late assignments
-- Review formatting standards for Prettier Markdown
+- ~~Review formatting standards for Prettier Markdown~~
+- Review general formatting standards for Prettier
+- Review linting standards for ESLint
 - Add error boundaries around components
 - Add setup wizard
+- Optimize hooks so that they don't call the API for undefined values
