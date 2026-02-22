@@ -12,13 +12,13 @@ import {
     Snackbar,
     Stack,
 } from "@mui/material";
-import { SubmitEvent, useState } from "react";
+import { SubmitEvent, useMemo, useState } from "react";
 import { AttendanceOption } from "src/common/models";
 import { Attendance } from "src/hooks/top-hat/attendance";
 
 interface AttendanceEditButtonProps {
-    studentId: number;
     courseId: number;
+    studentId: number;
     attendance: Attendance;
     onAttendanceUpdated?: (
         attendance: Attendance,
@@ -26,33 +26,34 @@ interface AttendanceEditButtonProps {
     ) => void;
 }
 
+interface AttendanceEditPopoverProps extends AttendanceEditButtonProps {
+    anchorEl: HTMLButtonElement | null;
+    onClose: () => void;
+}
+
 const TOAST_DURATION_MS = 2000;
 
-export const AttendanceEditButton = ({
-    studentId,
+const AttendanceEditPopover = ({
     courseId,
+    studentId,
     attendance,
+    anchorEl,
+    onClose,
     onAttendanceUpdated,
-}: AttendanceEditButtonProps) => {
-    const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-    const [toastOpen, setToastOpen] = useState<boolean>(false);
+}: AttendanceEditPopoverProps) => {
     const [saveError, setSaveError] = useState<string>();
     const [loading, setLoading] = useState<boolean>(false);
+    const [toastOpen, setToastOpen] = useState<boolean>(false);
 
-    let defaultStatus: AttendanceOption = "absent";
-    if (attendance.excused) {
-        defaultStatus = "excused";
-    } else if (attendance.attended) {
-        defaultStatus = "present";
-    }
-
-    const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handlePopoverClose = () => {
-        setAnchorEl(null);
-    };
+    const defaultStatus = useMemo((): AttendanceOption => {
+        if (attendance.excused) {
+            return "excused";
+        } else if (attendance.attended) {
+            return "present";
+        } else {
+            return "absent";
+        }
+    }, [attendance]);
 
     const handleToastClose = () => {
         setToastOpen(false);
@@ -80,58 +81,12 @@ export const AttendanceEditButton = ({
 
         if (!nextSaveError) {
             onAttendanceUpdated?.(attendance, newAttendance);
-            handlePopoverClose();
+            onClose();
         }
     };
 
-    const open = Boolean(anchorEl);
     return (
-        <Box>
-            <Button onClick={handleButtonClick}>
-                <Edit />
-            </Button>
-            <Popover
-                open={open}
-                anchorEl={anchorEl}
-                onClose={handlePopoverClose}
-                anchorOrigin={{
-                    vertical: "center",
-                    horizontal: "center",
-                }}
-            >
-                <Stack
-                    component="form"
-                    sx={{ p: 2 }}
-                    onSubmit={handleSubmitForm}
-                >
-                    <FormControl>
-                        <FormLabel>Status</FormLabel>
-                        <RadioGroup
-                            defaultValue={defaultStatus}
-                            name="attendance"
-                        >
-                            <FormControlLabel
-                                value="present"
-                                control={<Radio size="small" />}
-                                label="Present"
-                            />
-                            <FormControlLabel
-                                value="absent"
-                                control={<Radio size="small" />}
-                                label="Absent"
-                            />
-                            <FormControlLabel
-                                value="excused"
-                                control={<Radio size="small" />}
-                                label="Excused"
-                            />
-                        </RadioGroup>
-                    </FormControl>
-                    <Button loading={loading} type="submit">
-                        Update
-                    </Button>
-                </Stack>
-            </Popover>
+        <>
             <Snackbar
                 open={toastOpen}
                 onClose={handleToastClose}
@@ -145,6 +100,67 @@ export const AttendanceEditButton = ({
                     {saveError ?? "Attendance updated!"}
                 </Alert>
             </Snackbar>
+            {!anchorEl ? null : (
+                <Popover
+                    open
+                    anchorEl={anchorEl}
+                    onClose={onClose}
+                    anchorOrigin={{
+                        vertical: "center",
+                        horizontal: "center",
+                    }}
+                >
+                    <Stack
+                        component="form"
+                        sx={{ p: 2 }}
+                        onSubmit={handleSubmitForm}
+                    >
+                        <FormControl>
+                            <FormLabel>Status</FormLabel>
+                            <RadioGroup
+                                defaultValue={defaultStatus}
+                                name="attendance"
+                            >
+                                <FormControlLabel
+                                    value="present"
+                                    control={<Radio size="small" />}
+                                    label="Present"
+                                />
+                                <FormControlLabel
+                                    value="absent"
+                                    control={<Radio size="small" />}
+                                    label="Absent"
+                                />
+                                <FormControlLabel
+                                    value="excused"
+                                    control={<Radio size="small" />}
+                                    label="Excused"
+                                />
+                            </RadioGroup>
+                        </FormControl>
+                        <Button loading={loading} type="submit">
+                            Update
+                        </Button>
+                    </Stack>
+                </Popover>
+            )}
+        </>
+    );
+};
+
+export const AttendanceEditButton = (props: AttendanceEditButtonProps) => {
+    const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+
+    return (
+        <Box>
+            <Button onClick={(event) => setAnchorEl(event.currentTarget)}>
+                <Edit />
+            </Button>
+            <AttendanceEditPopover
+                anchorEl={anchorEl}
+                onClose={() => setAnchorEl(null)}
+                {...props}
+            />
         </Box>
     );
 };

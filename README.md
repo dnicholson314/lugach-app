@@ -41,3 +41,4 @@ that spawned the idea for this application.
 - Add error boundaries around components
 - Add setup wizard
 - Optimize hooks so that they don't call the API for undefined values
+- Fix where `AttendanceEditPopover` changes the default value of its `RadioGroup`
