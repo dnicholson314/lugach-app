@@ -224,7 +224,6 @@ export const callEndpoint = async <E, D = undefined>(
         if (!response.ok) {
             value = options?.fallback;
             error = `Top Hat error: ${response.status} ${response.statusText}`;
-            console.log(await response.text(), response.url);
         } else {
             value = await response.json();
             error = undefined;

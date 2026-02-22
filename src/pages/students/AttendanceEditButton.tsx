@@ -39,6 +39,13 @@ export const AttendanceEditButton = ({
     const [saveError, setSaveError] = useState<string>();
     const [loading, setLoading] = useState<boolean>(false);
 
+    let defaultStatus: AttendanceOption = "absent";
+    if (attendance.excused) {
+        defaultStatus = "excused";
+    } else if (attendance.attended) {
+        defaultStatus = "present";
+    }
+
     const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
     };
@@ -99,7 +106,10 @@ export const AttendanceEditButton = ({
                 >
                     <FormControl>
                         <FormLabel>Status</FormLabel>
-                        <RadioGroup defaultValue="present" name="attendance">
+                        <RadioGroup
+                            defaultValue={defaultStatus}
+                            name="attendance"
+                        >
                             <FormControlLabel
                                 value="present"
                                 control={<Radio size="small" />}
