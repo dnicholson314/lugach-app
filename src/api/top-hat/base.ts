@@ -1,4 +1,4 @@
-import { EndpointData } from "src/common/models";
+import { CallEndpointOptions, EndpointData } from "src/common/models";
 import {
     getEnvValue,
     loadStorageState,
@@ -7,7 +7,6 @@ import {
 } from "../secrets";
 import { chromium, Request } from "playwright";
 import { IpcMainInvokeEvent } from "electron";
-import { HttpMethod } from "src/common/const";
 
 const LIBERTY_USERNAME_SECRET_NAME = "LIBERTY_USERNAME";
 const LIBERTY_PASSWORD_SECRET_NAME = "LIBERTY_PASSWORD";
@@ -17,12 +16,6 @@ const AUTH_KEY_SECRET_NAME = "TH_AUTH_KEY";
 export interface LibertyCredentials {
     libertyUsername: string;
     libertyPassword: string;
-}
-
-export interface CallEndpointOptions<E, D> {
-    method?: HttpMethod;
-    data?: D;
-    fallback?: E;
 }
 
 export const getLibertyCredentials = async (): Promise<LibertyCredentials> => {

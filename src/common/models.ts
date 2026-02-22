@@ -1,3 +1,11 @@
+type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+
+export interface CallEndpointOptions<E, D> {
+    method?: HttpMethod;
+    data?: D;
+    fallback?: E;
+}
+
 export type EndpointData<E> = {
     value: E;
     error?: string;

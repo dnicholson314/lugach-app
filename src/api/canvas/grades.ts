@@ -26,7 +26,7 @@ export const handleGetAssignments = async (
     courseId: number,
 ): Promise<EndpointData<Assignment[]>> => {
     const endpoint = `courses/${courseId}/assignments`;
-    const data = await callEndpoint<Assignment[]>(endpoint, []);
+    const data = await callEndpoint<Assignment[]>(endpoint, { fallback: [] });
     return data;
 };
 

@@ -1,4 +1,4 @@
-import { EndpointData } from "src/common/models";
+import { CallEndpointOptions, EndpointData } from "src/common/models";
 import { getEnvValue, setEnvValue } from "../secrets";
 import { IpcMainInvokeEvent } from "electron";
 
@@ -55,42 +55,43 @@ export const handleSaveCanvasCredentials = async (
     }
 };
 
-export const callEndpoint = async <E>(
+export const callEndpoint = async <E, D = undefined>(
     endpoint: string,
-    fallback?: E,
+    options?: CallEndpointOptions<E, D>,
 ): Promise<EndpointData<E | undefined>> => {
+    let value: E, error: string;
     try {
         const { apiUrl, apiKey } = await getCanvasCredentials();
         if (!apiUrl || !apiKey) {
-            return {
-                value: fallback ?? undefined,
-                error: "Missing Canvas credentials.",
-            };
+            throw "Missing Canvas credentials.";
         }
 
         const url = `${apiUrl}/api/v1/${endpoint}`;
+        const body = options?.data ? JSON.stringify(options.data) : undefined;
+
         const response = await fetch(url, {
+            method: options?.method ?? "GET",
             headers: {
                 Authorization: `Bearer ${apiKey}`,
+                "Content-Type": "application/json",
             },
+            body,
         });
 
         if (!response.ok) {
-            return {
-                value: fallback ?? undefined,
-                error: `Canvas API error: ${response.status} ${response.statusText}`,
-            };
+            value = options.fallback ?? undefined;
+            error = `Canvas API error: ${response.status} ${response.statusText}`;
+        } else {
+            value = await response.json();
+            error = undefined;
         }
-
-        const nextData = await response.json();
-
-        return {
-            value: nextData,
-        };
-    } catch (error) {
-        return {
-            value: fallback ?? undefined,
-            error: `Runtime error: ${error instanceof Error ? error.message : String(error)}`,
-        };
+    } catch (exception) {
+        value = options.fallback ?? undefined;
+        error = `Runtime error: ${exception instanceof Error ? exception.message : String(exception)}`;
     }
+
+    return {
+        value,
+        error,
+    };
 };
