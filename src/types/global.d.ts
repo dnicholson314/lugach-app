@@ -39,6 +39,13 @@ declare global {
                 studentId: number,
             ) => Promise<EndpointData<Submission>>;
 
+            gradeSubmission: (
+                courseId: number,
+                assignmentId: number,
+                studentId: number,
+                grade: Grade,
+            ) => Promise<EndpointData<undefined>>;
+
             getLibertyCredentials: () => Promise<
                 EndpointData<LibertyCredentials>
             >;

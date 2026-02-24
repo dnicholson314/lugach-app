@@ -10,6 +10,7 @@ that spawned the idea for this application.
 
 - ~~**Add encryption for secrets**~~
 - ~~**Add settings page**~~
+- Add selecting Canvas courses
 - ~~**Add manual linking of Top Hat courses to Canvas courses**~~
 - ~~Add attendance editing~~
 - Add grade and due date editing

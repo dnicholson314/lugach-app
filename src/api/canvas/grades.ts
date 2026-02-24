@@ -21,6 +21,14 @@ export interface Submission {
     submitted_at?: string;
 }
 
+export interface SubmissionPostData {
+    submission: {
+        posted_grade: string;
+    };
+}
+
+export type Grade = number | "pass" | "fail";
+
 export const handleGetAssignments = async (
     _: IpcMainInvokeEvent,
     courseId: number,
@@ -39,4 +47,28 @@ export const handleGetSubmission = async (
     const endpoint = `courses/${courseId}/assignments/${assignmentId}/submissions/${studentId}`;
     const data = await callEndpoint<Submission>(endpoint);
     return data;
+};
+
+export const handleGradeSubmission = async (
+    _: IpcMainInvokeEvent,
+    courseId: number,
+    assignmentId: number,
+    studentId: number,
+    grade: Grade,
+): Promise<EndpointData<undefined>> => {
+    const endpoint = `courses/${courseId}/assignments/${assignmentId}/submissions/${studentId}`;
+    const postData = {
+        submission: {
+            posted_grade: String(grade),
+        },
+    };
+
+    const { error } = await callEndpoint<Submission, SubmissionPostData>(
+        endpoint,
+        { method: "POST", data: postData },
+    );
+    return {
+        value: undefined,
+        error,
+    };
 };

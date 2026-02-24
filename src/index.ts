@@ -9,7 +9,11 @@ import {
 } from "electron";
 import { handleGetCanvasCourses } from "src/api/canvas/courses";
 import { handleGetCanvasStudents } from "src/api/canvas/students";
-import { handleGetAssignments, handleGetSubmission } from "./api/canvas/grades";
+import {
+    handleGetAssignments,
+    handleGetSubmission,
+    handleGradeSubmission,
+} from "./api/canvas/grades";
 import { handleGetTopHatCourses } from "./api/top-hat/courses";
 import {
     saveTopHatStorageState,
@@ -130,6 +134,7 @@ ipcMain.handle("canvas:get-courses", handleGetCanvasCourses);
 ipcMain.handle("canvas:get-students", handleGetCanvasStudents);
 ipcMain.handle("canvas:get-assignments", handleGetAssignments);
 ipcMain.handle("canvas:get-submission", handleGetSubmission);
+ipcMain.handle("canvas:grade-submission", handleGradeSubmission);
 
 ipcMain.handle("liberty:get-credentials", handleGetLibertyCredentials);
 ipcMain.handle("liberty:save-credentials", handleSaveLibertyCredentials);
