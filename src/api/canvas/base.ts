@@ -72,6 +72,7 @@ export const callEndpoint = async <E, D = undefined>(
         const response = await fetch(url, {
             method: options?.method ?? "GET",
             headers: {
+                "Accept-Language": "en-US",
                 Authorization: `Bearer ${apiKey}`,
                 "Content-Type": "application/json",
             },
@@ -80,7 +81,7 @@ export const callEndpoint = async <E, D = undefined>(
 
         if (!response.ok) {
             value = options.fallback ?? undefined;
-            error = `Canvas API error: ${response.status} ${response.statusText}`;
+            error = `Canvas API error: ${response.status} ${await response.text()}`;
         } else {
             value = await response.json();
             error = undefined;

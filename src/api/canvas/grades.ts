@@ -8,6 +8,7 @@ export interface Assignment {
     description: string;
     points_possible: number;
     is_quiz_assignment: boolean;
+    published: boolean;
     due_at?: string;
     lock_at?: string;
     html_url?: string;
@@ -27,7 +28,7 @@ export interface SubmissionPostData {
     };
 }
 
-export type Grade = number | "pass" | "fail";
+export type Score = number | "pass" | "fail";
 
 export const handleGetAssignments = async (
     _: IpcMainInvokeEvent,
@@ -54,18 +55,18 @@ export const handleGradeSubmission = async (
     courseId: number,
     assignmentId: number,
     studentId: number,
-    grade: Grade,
+    score: Score,
 ): Promise<EndpointData<undefined>> => {
     const endpoint = `courses/${courseId}/assignments/${assignmentId}/submissions/${studentId}`;
     const postData = {
         submission: {
-            posted_grade: String(grade),
+            posted_grade: String(score),
         },
     };
 
     const { error } = await callEndpoint<Submission, SubmissionPostData>(
         endpoint,
-        { method: "POST", data: postData },
+        { method: "PUT", data: postData },
     );
     return {
         value: undefined,

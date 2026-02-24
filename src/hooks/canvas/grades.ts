@@ -4,9 +4,11 @@ import { HookData } from "src/common/models";
 
 export interface Grade {
     id: number;
+    assignmentId: number;
     name: string;
     html_url: string;
-    due_at?: string;
+    published: boolean;
+    due_at?: Date;
     points_possible?: number;
     submitted_at?: string;
     score?: number;
@@ -61,9 +63,13 @@ export const useGrades = (
                             const submission = submissionData.value;
                             return {
                                 id: submission.id,
+                                assignmentId: assignment.id,
                                 name: assignment.name,
                                 html_url: assignment.html_url,
-                                due_at: assignment.due_at,
+                                published: assignment.published,
+                                due_at:
+                                    assignment.due_at &&
+                                    new Date(Date.parse(assignment.due_at)),
                                 points_possible: assignment.points_possible,
                                 submitted_at: submission.submitted_at,
                                 score: submission.score,

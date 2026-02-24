@@ -10,10 +10,11 @@ that spawned the idea for this application.
 
 - ~~**Add encryption for secrets**~~
 - ~~**Add settings page**~~
-- Add selecting Canvas courses
+- Add filtering Canvas courses
 - ~~**Add manual linking of Top Hat courses to Canvas courses**~~
 - ~~Add attendance editing~~
-- Add grade and due date editing
+- ~~Add grade editing~~
+- Add due date editing
 - Port over applications from TUI
   - Flag Absent Students (--> `identify_absent_students`)
   - ~~Flag Quiz Concerns~~ (--> `identify_quiz_concerns`)
@@ -43,3 +44,4 @@ that spawned the idea for this application.
 - Add setup wizard
 - Optimize hooks so that they don't call the API for undefined values
 - Fix where `AttendanceEditPopover` changes the default value of its `RadioGroup`
+- Add verifying scopes for API calls

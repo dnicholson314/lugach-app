@@ -5,7 +5,7 @@ import { contextBridge, IpcRenderer, ipcRenderer } from "electron";
 import { AttendanceOption, EndpointData } from "./common/models";
 import { CanvasStudent } from "./api/canvas/students";
 import { CanvasCourse } from "./api/canvas/courses";
-import { Assignment, Grade, Submission } from "./api/canvas/grades";
+import { Assignment, Submission, Score } from "./api/canvas/grades";
 import { TopHatCourse } from "./api/top-hat/courses";
 import { AttendanceItem, AttendanceRecord } from "./api/top-hat/attendance";
 import { TopHatStudent } from "./api/top-hat/students";
@@ -55,14 +55,14 @@ contextBridge.exposeInMainWorld("api", {
         courseId: number,
         assignmentId: number,
         studentId: number,
-        grade: Grade,
+        score: Score,
     ): Promise<EndpointData<undefined>> =>
         ipcRenderer.invoke(
             "canvas:grade-submission",
             courseId,
             assignmentId,
             studentId,
-            grade,
+            score,
         ),
 
     getLibertyCredentials: (): Promise<EndpointData<LibertyCredentials>> =>
