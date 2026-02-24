@@ -65,6 +65,23 @@ contextBridge.exposeInMainWorld("api", {
             score,
         ),
 
+    editSubmissionDueDate: async (
+        courseId: number,
+        assignmentId: number,
+        student: CanvasStudent,
+        dates: {
+            dueAt: Date;
+            lockAt?: Date;
+        },
+    ): Promise<EndpointData<undefined>> =>
+        ipcRenderer.invoke(
+            "canvas:edit-submission-due-date",
+            courseId,
+            assignmentId,
+            student,
+            dates,
+        ),
+
     getLibertyCredentials: (): Promise<EndpointData<LibertyCredentials>> =>
         ipcRenderer.invoke("liberty:get-credentials"),
 

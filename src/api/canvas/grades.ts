@@ -1,6 +1,7 @@
 import { IpcMainInvokeEvent } from "electron";
 import { EndpointData } from "src/common/models";
 import { callEndpoint } from "./base";
+import { CanvasStudent } from "./students";
 
 export interface Assignment {
     id: number;
@@ -25,6 +26,15 @@ export interface Submission {
 export interface SubmissionPostData {
     submission: {
         posted_grade: string;
+    };
+}
+
+export interface OverridePostData {
+    assignment_override: {
+        student_ids: number[];
+        title: string;
+        due_at: string;
+        lock_at: string;
     };
 }
 
@@ -67,6 +77,36 @@ export const handleGradeSubmission = async (
     const { error } = await callEndpoint<Submission, SubmissionPostData>(
         endpoint,
         { method: "PUT", data: postData },
+    );
+    return {
+        value: undefined,
+        error,
+    };
+};
+
+export const handleEditSubmissionDueDate = async (
+    _: IpcMainInvokeEvent,
+    courseId: number,
+    assignmentId: number,
+    student: CanvasStudent,
+    dates: {
+        dueAt: Date;
+        lockAt?: Date;
+    },
+): Promise<EndpointData<undefined>> => {
+    const endpoint = `courses/${courseId}/assignments/${assignmentId}/overrides`;
+    const postData = {
+        assignment_override: {
+            student_ids: [student.id],
+            title: student.name,
+            due_at: dates.dueAt.toISOString(),
+            lock_at: dates.lockAt?.toISOString(),
+        },
+    };
+
+    const { error } = await callEndpoint<Submission, OverridePostData>(
+        endpoint,
+        { method: "POST", data: postData },
     );
     return {
         value: undefined,

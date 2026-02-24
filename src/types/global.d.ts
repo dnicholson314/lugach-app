@@ -46,6 +46,16 @@ declare global {
                 score: Score,
             ) => Promise<EndpointData<undefined>>;
 
+            editSubmissionDueDate: (
+                courseId: number,
+                assignmentId: number,
+                student: CanvasStudent,
+                dates: {
+                    dueAt: Date;
+                    lockAt?: Date;
+                },
+            ) => Promise<EndpointData<undefined>>;
+
             getLibertyCredentials: () => Promise<
                 EndpointData<LibertyCredentials>
             >;
