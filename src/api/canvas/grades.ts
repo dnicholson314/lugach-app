@@ -1,7 +1,26 @@
 import { IpcMainInvokeEvent } from "electron";
 import { EndpointData } from "src/common/models";
 import { callEndpoint } from "./base";
-import { CanvasStudent } from "./students";
+
+export interface AssignmentOverride {
+    id: number;
+    assignment_id?: number;
+    quiz_id?: number;
+    student_ids: number[];
+    title: string;
+    due_at?: string;
+    lock_at?: string;
+    unlock_at?: string;
+}
+
+export interface AssignmentDate {
+    id?: number;
+    base?: boolean;
+    title: string;
+    due_at?: string;
+    lock_at?: string;
+    unlock_at?: string;
+}
 
 export interface Assignment {
     id: number;
@@ -10,9 +29,11 @@ export interface Assignment {
     points_possible: number;
     is_quiz_assignment: boolean;
     published: boolean;
+    all_dates: AssignmentDate[];
     due_at?: string;
     lock_at?: string;
     html_url?: string;
+    overrides?: AssignmentOverride[];
 }
 
 export interface Submission {
@@ -44,7 +65,7 @@ export const handleGetAssignments = async (
     _: IpcMainInvokeEvent,
     courseId: number,
 ): Promise<EndpointData<Assignment[]>> => {
-    const endpoint = `courses/${courseId}/assignments`;
+    const endpoint = `courses/${courseId}/assignments?include[]=overrides&include[]=all_dates`;
     const data = await callEndpoint<Assignment[]>(endpoint, { fallback: [] });
     return data;
 };
@@ -74,7 +95,7 @@ export const handleGradeSubmission = async (
         },
     };
 
-    const { error } = await callEndpoint<Submission, SubmissionPostData>(
+    const { error } = await callEndpoint<undefined, SubmissionPostData>(
         endpoint,
         { method: "PUT", data: postData },
     );
@@ -84,11 +105,11 @@ export const handleGradeSubmission = async (
     };
 };
 
-export const handleEditSubmissionDueDate = async (
+export const handleEditAssignmentDueDate = async (
     _: IpcMainInvokeEvent,
     courseId: number,
     assignmentId: number,
-    student: CanvasStudent,
+    studentId: number,
     dates: {
         dueAt: Date;
         lockAt?: Date;
@@ -97,19 +118,46 @@ export const handleEditSubmissionDueDate = async (
     const endpoint = `courses/${courseId}/assignments/${assignmentId}/overrides`;
     const postData = {
         assignment_override: {
-            student_ids: [student.id],
-            title: student.name,
+            student_ids: [studentId],
+            title: `Override for student ID ${studentId}`,
             due_at: dates.dueAt.toISOString(),
             lock_at: dates.lockAt?.toISOString(),
         },
     };
 
-    const { error } = await callEndpoint<Submission, OverridePostData>(
-        endpoint,
-        { method: "POST", data: postData },
+    const { value: overrides, error: getError } =
+        await callEndpoint<AssignmentOverride[]>(endpoint);
+    if (getError) {
+        return {
+            value: undefined,
+            error: getError,
+        };
+    }
+
+    const existingOverride = overrides.find((override: AssignmentOverride) =>
+        override.student_ids.includes(studentId),
     );
+    if (existingOverride) {
+        const { error: putError } = await callEndpoint<
+            undefined,
+            OverridePostData
+        >(`${endpoint}/${existingOverride.id}`, {
+            method: "PUT",
+            data: postData,
+        });
+
+        return {
+            value: undefined,
+            error: putError,
+        };
+    }
+
+    const { error: postError } = await callEndpoint<
+        undefined,
+        OverridePostData
+    >(endpoint, { method: "POST", data: postData });
     return {
         value: undefined,
-        error,
+        error: postError,
     };
 };

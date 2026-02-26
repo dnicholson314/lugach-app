@@ -46,10 +46,10 @@ declare global {
                 score: Score,
             ) => Promise<EndpointData<undefined>>;
 
-            editSubmissionDueDate: (
+            editAssignmentDueDate: (
                 courseId: number,
                 assignmentId: number,
-                student: CanvasStudent,
+                studentId: number,
                 dates: {
                     dueAt: Date;
                     lockAt?: Date;

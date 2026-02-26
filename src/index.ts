@@ -10,7 +10,7 @@ import {
 import { handleGetCanvasCourses } from "src/api/canvas/courses";
 import { handleGetCanvasStudents } from "src/api/canvas/students";
 import {
-    handleEditSubmissionDueDate,
+    handleEditAssignmentDueDate,
     handleGetAssignments,
     handleGetSubmission,
     handleGradeSubmission,
@@ -136,7 +136,7 @@ ipcMain.handle("canvas:get-students", handleGetCanvasStudents);
 ipcMain.handle("canvas:get-assignments", handleGetAssignments);
 ipcMain.handle("canvas:get-submission", handleGetSubmission);
 ipcMain.handle("canvas:grade-submission", handleGradeSubmission);
-ipcMain.handle("canvas:edit-submission-due-date", handleEditSubmissionDueDate);
+ipcMain.handle("canvas:edit-assignment-due-date", handleEditAssignmentDueDate);
 
 ipcMain.handle("liberty:get-credentials", handleGetLibertyCredentials);
 ipcMain.handle("liberty:save-credentials", handleSaveLibertyCredentials);

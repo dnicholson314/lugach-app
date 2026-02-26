@@ -65,20 +65,20 @@ contextBridge.exposeInMainWorld("api", {
             score,
         ),
 
-    editSubmissionDueDate: async (
+    editAssignmentDueDate: async (
         courseId: number,
         assignmentId: number,
-        student: CanvasStudent,
+        studentId: CanvasStudent,
         dates: {
             dueAt: Date;
             lockAt?: Date;
         },
     ): Promise<EndpointData<undefined>> =>
         ipcRenderer.invoke(
-            "canvas:edit-submission-due-date",
+            "canvas:edit-assignment-due-date",
             courseId,
             assignmentId,
-            student,
+            studentId,
             dates,
         ),
 
