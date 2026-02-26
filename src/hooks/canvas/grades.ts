@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { Assignment } from "src/api/canvas/grades";
+import {
+    Assignment,
+    AssignmentDate,
+    AssignmentOverride,
+} from "src/api/canvas/grades";
 import { HookData } from "src/common/models";
 
 export interface Grade {
@@ -56,20 +60,33 @@ export const useGrades = (
                                 );
                             if (!submissionData.value) {
                                 throw new Error(
-                                    "An error occurred while retrieving assignment data.",
+                                    "An error occurred while retrieving submission data.",
                                 );
                             }
 
                             const submission = submissionData.value;
+
+                            let due_at: Date;
+                            const base_due_at = assignment.all_dates?.find(
+                                (date: AssignmentDate) => date.base,
+                            )?.due_at;
+                            const override_due_at = assignment.overrides?.find(
+                                (ov: AssignmentOverride) =>
+                                    ov.student_ids.includes(studentId),
+                            )?.due_at;
+                            if (base_due_at || override_due_at) {
+                                due_at = new Date(
+                                    Date.parse(override_due_at ?? base_due_at),
+                                );
+                            }
+
                             return {
                                 id: submission.id,
                                 assignmentId: assignment.id,
                                 name: assignment.name,
                                 html_url: assignment.html_url,
                                 published: assignment.published,
-                                due_at:
-                                    assignment.due_at &&
-                                    new Date(Date.parse(assignment.due_at)),
+                                due_at,
                                 points_possible: assignment.points_possible,
                                 submitted_at: submission.submitted_at,
                                 score: submission.score,

@@ -1,39 +1,36 @@
 import { Edit } from "@mui/icons-material";
-import {
-    Alert,
-    Box,
-    Button,
-    Popover,
-    Snackbar,
-    Stack,
-    TextField,
-} from "@mui/material";
+import { Alert, Box, Button, Popover, Snackbar, Stack } from "@mui/material";
+import { DateField, LocalizationProvider } from "@mui/x-date-pickers";
 import { SubmitEvent, useState } from "react";
-import { Score } from "src/api/canvas/grades";
 import { Grade } from "src/hooks/canvas/grades";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs, { Dayjs } from "dayjs";
 
-interface GradeEditButtonProps {
+interface DueDateEditButtonProps {
     courseId: number;
     studentId: number;
     grade: Grade;
-    onGradeUpdated?: (grade: Grade, nextScore: Score) => void;
+    onDueDateUpdated?: (grade: Grade, nextDate: Date) => void;
 }
 
-interface GradeEditPopoverProps extends GradeEditButtonProps {
+interface DueDateEditPopoverProps extends DueDateEditButtonProps {
     anchorEl: HTMLButtonElement | null;
     onClose: () => void;
 }
 
 const TOAST_DURATION_MS = 2000;
 
-const GradeEditPopover = ({
+const DueDateEditPopover = ({
     courseId,
     studentId,
     grade,
     anchorEl,
     onClose,
-    onGradeUpdated,
-}: GradeEditPopoverProps) => {
+    onDueDateUpdated,
+}: DueDateEditPopoverProps) => {
+    const [dateValue, setDateValue] = useState<Dayjs | undefined>(
+        grade.due_at && dayjs(grade.due_at),
+    );
     const [saveError, setSaveError] = useState<string>();
     const [loading, setLoading] = useState<boolean>(false);
     const [toastOpen, setToastOpen] = useState<boolean>(false);
@@ -46,24 +43,25 @@ const GradeEditPopover = ({
         event: SubmitEvent<HTMLFormElement>,
     ): Promise<void> => {
         event.preventDefault();
+        if (!dateValue) {
+            setSaveError("Specify a date.");
+            return;
+        }
 
-        setLoading(true);
+        const dueAt = dateValue.toDate();
 
-        const formData = new FormData(event.currentTarget);
-        const newScore = formData.get("score") as Score;
-
-        const { error: nextSaveError } = await window.api.gradeSubmission(
+        const { error: nextSaveError } = await window.api.editAssignmentDueDate(
             courseId,
             grade.assignmentId,
             studentId,
-            newScore,
+            { dueAt },
         );
         setLoading(false);
         setSaveError(nextSaveError);
         setToastOpen(true);
 
         if (!nextSaveError) {
-            onGradeUpdated?.(grade, newScore);
+            onDueDateUpdated?.(grade, dueAt);
             onClose();
         }
     };
@@ -80,7 +78,7 @@ const GradeEditPopover = ({
                     severity={saveError ? "error" : "success"}
                     sx={{ width: "100%" }}
                 >
-                    {saveError ?? "Grade updated!"}
+                    {saveError ?? "Due date updated!"}
                 </Alert>
             </Snackbar>
             {!anchorEl ? null : (
@@ -98,13 +96,13 @@ const GradeEditPopover = ({
                         sx={{ p: 2 }}
                         onSubmit={handleSubmitForm}
                     >
-                        <TextField
-                            size="small"
-                            defaultValue={grade.score}
-                            required
-                            name="score"
-                            label="New score"
-                        />
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DateField
+                                value={dateValue}
+                                onChange={(newValue) => setDateValue(newValue)}
+                                label="New due date"
+                            />
+                        </LocalizationProvider>
                         <Button loading={loading} type="submit">
                             Update
                         </Button>
@@ -115,7 +113,7 @@ const GradeEditPopover = ({
     );
 };
 
-export const GradeEditButton = (props: GradeEditButtonProps) => {
+export const DueDateEditButton = (props: DueDateEditButtonProps) => {
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
     return (
@@ -126,7 +124,7 @@ export const GradeEditButton = (props: GradeEditButtonProps) => {
             >
                 <Edit fontSize="inherit" />
             </Button>
-            <GradeEditPopover
+            <DueDateEditPopover
                 anchorEl={anchorEl}
                 onClose={() => setAnchorEl(null)}
                 {...props}

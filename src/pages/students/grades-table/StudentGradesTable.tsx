@@ -13,15 +13,21 @@ import {
 } from "@mui/material";
 import { Grade, useGrades } from "src/hooks/canvas/grades";
 import { GradeEditButton } from "./GradeEditButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { formatDate } from "src/common/functions";
+import { DueDateEditButton } from "./DueDateEditButton";
+
+interface UpdateableFields {
+    score?: number;
+    dueAt?: Date;
+}
 
 interface StudentGradesTableProps {
     courseId: number;
     studentId: number;
 }
 
-type OptimisticUpdates = Record<number, number>;
+type OptimisticUpdates = Record<number, UpdateableFields>;
 
 export const StudentGradesTable = ({
     courseId,
@@ -32,25 +38,60 @@ export const StudentGradesTable = ({
 
     const { value: grades, error, loading } = useGrades(courseId, studentId);
 
-    const displayGrades = grades.map((grade) => {
-        const localScore = optimisticUpdates[grade.id];
-        if (!localScore) return grade;
+    const displayGrades: Grade[] = grades.map((grade: Grade) => {
+        const localGrade = grade;
+        const localScore = optimisticUpdates[grade.id]?.score;
+        if (localScore) {
+            localGrade.score = localScore;
+        }
 
-        return {
-            ...grade,
-            score: localScore,
-        };
+        const localDueAt = optimisticUpdates[grade.id]?.dueAt;
+        if (localDueAt) {
+            localGrade.due_at = localDueAt;
+        }
+
+        return grade;
     });
+
+    useEffect(() => {
+        setOptimisticUpdates({});
+    }, [studentId]);
 
     const handleGradeUpdated = (
         updatedGrade: Grade,
         newScore: number,
     ): void => {
         setOptimisticUpdates(
-            (previous: OptimisticUpdates): OptimisticUpdates => ({
-                ...previous,
-                [updatedGrade.id]: newScore,
-            }),
+            (previous: OptimisticUpdates): OptimisticUpdates => {
+                const next = { ...previous };
+                if (next[updatedGrade.id]) {
+                    next[updatedGrade.id].score = newScore;
+                } else {
+                    next[updatedGrade.id] = {
+                        score: newScore,
+                    };
+                }
+                return next;
+            },
+        );
+    };
+
+    const handleDueDateUpdated = (
+        updatedGrade: Grade,
+        newDueDate: Date,
+    ): void => {
+        setOptimisticUpdates(
+            (previous: OptimisticUpdates): OptimisticUpdates => {
+                const next = { ...previous };
+                if (next[updatedGrade.id]) {
+                    next[updatedGrade.id].dueAt = newDueDate;
+                } else {
+                    next[updatedGrade.id] = {
+                        dueAt: newDueDate,
+                    };
+                }
+                return next;
+            },
         );
     };
 
@@ -85,8 +126,22 @@ export const StudentGradesTable = ({
                                         </a>
                                     </TableCell>
                                     <TableCell>
-                                        {grade.due_at &&
-                                            formatDate(grade.due_at)}
+                                        {!grade.due_at ? null : (
+                                            <Stack
+                                                direction="row"
+                                                justifyContent="space-between"
+                                            >
+                                                {formatDate(grade.due_at)}
+                                                <DueDateEditButton
+                                                    courseId={courseId}
+                                                    studentId={studentId}
+                                                    grade={grade}
+                                                    onDueDateUpdated={
+                                                        handleDueDateUpdated
+                                                    }
+                                                />
+                                            </Stack>
+                                        )}
                                     </TableCell>
                                     <TableCell>
                                         {!grade.published ? (
@@ -94,7 +149,10 @@ export const StudentGradesTable = ({
                                                 <span>N/A</span>
                                             </Tooltip>
                                         ) : (
-                                            <Stack direction="row" gap="5px">
+                                            <Stack
+                                                direction="row"
+                                                justifyContent="space-between"
+                                            >
                                                 {grade.score}
                                                 <GradeEditButton
                                                     courseId={courseId}

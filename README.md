@@ -41,27 +41,27 @@ You should now have a working Electron development environment for LUGACH.
 
 ### Flagship features
 
-- Add setting to filter out Canvas courses
-- Add due date editing to `StudentAttendanceTable`
+- Add setting to filter Canvas courses
 - Port over applications from TUI
   - Flag Absent Students (--> `identify_absent_students`)
+  - Take Attendance (--> `take_attendance`)
+  - Apply Time Extensions (--> `modify_time_limits`)
   - ~~Flag Quiz Concerns~~ (--> `identify_quiz_concerns`)
     - Handled by color-coding late assignments
   - ~~Modify Due Dates~~ (--> `modify_due_dates`)
     - Handled in `StudentGradesTable`
-  - Apply Time Extensions (--> `modify_time_limits`)
   - ~~Search Student by Name~~ (--> `search_student_by_name`)
     - Handled in `StudentsDataGrid`
   - ~~Modify Attendance~~ (--> `modify_attendance`)
     - Handled in `StudentAttendanceTable`
-  - Take Attendance (--> `take_attendance`)
   - ~~Get Grades~~ (--> `get_grades`)
     - Handled in `StudentGradesTable`
 - ~~**Add encryption for secrets**~~
 - ~~**Add settings page**~~
 - ~~**Add manual linking of Top Hat courses to Canvas courses**~~
-- ~~Add attendance editing~~
-- ~~Add grade editing~~
+- ~~Add attendance editing to `StudentAttendanceTable`~~
+- ~~Add grade editing to `StudentGradesTable`~~
+- ~~Add due date editing to `StudentGradesTable`~~
 
 ### QoL features
 
@@ -84,7 +84,7 @@ You should now have a working Electron development environment for LUGACH.
 - Review general formatting standards for Prettier
 - Review linting standards for ESLint
 - Optimize hooks so that they don't call the API for undefined values
-- Fix where `AttendanceEditPopover` changes the default value of its `RadioGroup`
+- Fix `AttendanceEditPopover` changing the default value of its `RadioGroup`
 - Add verifying scopes for API calls
 - ~~Review formatting standards for Prettier Markdown~~
 - Add `@playwright/browser-chromium` to `devDependencies` in `package.json` and
