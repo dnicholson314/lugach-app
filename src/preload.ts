@@ -13,6 +13,7 @@ import { View } from "./pages/ViewContext";
 import { CanvasCredentials } from "./api/canvas/base";
 import { LibertyCredentials } from "./api/top-hat/base";
 import { Integrations } from "./api/integrations";
+import { Scope } from "./api/scope";
 
 contextBridge.exposeInMainWorld("api", {
     onUpdateView: (handleUpdateView: (view: View) => void): IpcRenderer =>
@@ -139,4 +140,12 @@ contextBridge.exposeInMainWorld("api", {
             canvasCourseId,
             topHatCourseId,
         ),
+
+    getScope: (): Promise<EndpointData<Scope>> =>
+        ipcRenderer.invoke("scope:get-scope"),
+
+    saveScopedCanvasCourseIds: (
+        courseIds: number[],
+    ): Promise<string | undefined> =>
+        ipcRenderer.invoke("scope:save-scoped-canvas-course-ids", courseIds),
 });

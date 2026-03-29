@@ -43,6 +43,7 @@ export const CanvasCredentialsForm = () => {
         setSaveError(nextSaveError);
         setToastOpen(true);
     };
+
     return error ? (
         <Alert severity="error">{error}</Alert>
     ) : credentialsLoading ? (

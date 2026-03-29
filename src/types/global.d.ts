@@ -92,6 +92,12 @@ declare global {
                 canvasCourseId: number,
                 topHatCourseId: number | undefined,
             ) => Promise<string | undefined>;
+
+            getScope: () => Promise<EndpointData<Scope>>;
+
+            saveScopedCanvasCourseIds: (
+                courseIds: number[],
+            ) => Promise<string | undefined>;
         };
     }
 }
