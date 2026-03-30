@@ -1,5 +1,8 @@
 # LUGACH (Liberty University GA Canvas Helps)
 
+> Dedicated to Jorge, Joseph, Elyse, Colton, and all the other GSAs in Liberty
+> Theological Seminary. Your labor is not in vain!
+
 LUGACH is an [Electron](https://www.electronjs.org/) application that makes
 Liberty GAs' lives easier.
 
@@ -90,6 +93,3 @@ You should now have a working Electron development environment for LUGACH.
 - ~~Review formatting standards for Prettier Markdown~~
 - Add `@playwright/browser-chromium` to `devDependencies` in `package.json` and
   check that existing Playwright code works without needing to install browsers
-
-> Dedicated to Jorge, Joseph, Elyse, Colton, and all the other GSAs in Liberty
-> Theological Seminary. Your labor is not in vain!
