@@ -4,6 +4,7 @@ import { useView } from "../ViewContext";
 import { CanvasCredentialsForm } from "./CanvasCredentialsForm";
 import { LibertyCredentialsForm } from "./LibertyCredentialsForm";
 import { IntegrationsForm } from "./IntegrationsForm";
+import { ScopedCanvasCoursesForm } from "./ScopedCanvasCoursesForm";
 
 export const SettingsPage = () => {
     const { setCurrentView } = useView();
@@ -18,7 +19,10 @@ export const SettingsPage = () => {
                 <Stack gap="10px">
                     <Typography>Canvas settings</Typography>
                     <Divider />
+                    <Typography>Canvas credentials</Typography>
                     <CanvasCredentialsForm />
+                    <Typography>Selected Canvas courses</Typography>
+                    <ScopedCanvasCoursesForm />
                 </Stack>
                 <Stack gap="10px">
                     <Typography>Top Hat settings</Typography>

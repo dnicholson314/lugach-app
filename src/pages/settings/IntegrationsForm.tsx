@@ -85,17 +85,16 @@ export const IntegrationsForm = () => {
         let nextSaveError = undefined;
         if (!selectedCanvasCourseId) {
             nextSaveError = "Please select a Canvas course.";
-            return;
         } else {
             nextSaveError = await window.api.saveIntegration(
                 selectedCanvasCourseId,
                 selectedTopHatCourseId,
             );
+            fetchData();
         }
 
         setSaveError(nextSaveError);
         setToastOpen(true);
-        fetchData();
     };
     return error ? (
         <Alert severity="error">{error}</Alert>
@@ -115,7 +114,7 @@ export const IntegrationsForm = () => {
             >
                 <CanvasCourseSelect
                     sx={{ width: "200px" }}
-                    onChange={(course: CanvasCourse) =>
+                    onChange={(_, course: CanvasCourse) =>
                         setSelectedCanvasCourseId(course.id)
                     }
                 />

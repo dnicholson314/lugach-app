@@ -41,17 +41,17 @@ You should now have a working Electron development environment for LUGACH.
 
 ### Flagship features
 
-- Add setting to filter Canvas courses
+- ~~Add setting to filter Canvas courses~~
 - Port over applications from TUI
   - Flag Absent Students (--> `identify_absent_students`)
   - Take Attendance (--> `take_attendance`)
   - Apply Time Extensions (--> `modify_time_limits`)
+  - Search Student by Name (--> `search_student_by_name`)
+    - Depends on being able to see all students in one view
   - ~~Flag Quiz Concerns~~ (--> `identify_quiz_concerns`)
     - Handled by color-coding late assignments
   - ~~Modify Due Dates~~ (--> `modify_due_dates`)
     - Handled in `StudentGradesTable`
-  - ~~Search Student by Name~~ (--> `search_student_by_name`)
-    - Handled in `StudentsDataGrid`
   - ~~Modify Attendance~~ (--> `modify_attendance`)
     - Handled in `StudentAttendanceTable`
   - ~~Get Grades~~ (--> `get_grades`)
@@ -66,6 +66,7 @@ You should now have a working Electron development environment for LUGACH.
 ### QoL features
 
 - Add option to see all students in one view
+  - This could be by clicking the top-level label of `CanvasCoursesTreeView`
 - Add letter grades to grades table
 - Add error boundaries around components
 - Add setup wizard
