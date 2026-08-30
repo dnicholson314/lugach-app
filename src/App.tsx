@@ -1,20 +1,7 @@
-import { StudentsPage } from "src/pages/students/StudentsPage";
-import { useView, ViewProvider } from "./pages/ViewContext";
-import { SettingsPage } from "./pages/settings/SettingsPage";
+import React from "react";
 
-export const AppRouter = () => {
-    const { currentView } = useView();
-
-    switch (currentView) {
-        case "settings":
-            return <SettingsPage />;
-        default:
-            return <StudentsPage />;
-    }
+export const App = (): React.JSX.Element => {
+  return <p>Hello world!</p>;
 };
 
-export const App = () => (
-    <ViewProvider>
-        <AppRouter />
-    </ViewProvider>
-);
+export default App;
