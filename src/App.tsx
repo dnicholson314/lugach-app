@@ -150,7 +150,7 @@ export const App = (): React.JSX.Element => {
                 fetchAllStudents(loadedCourses),
             );
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line @eslint-react/exhaustive-deps
     }, [settingsLoading]);
 
     // ── Settings form submit ────────────────────────────────────────────────────
